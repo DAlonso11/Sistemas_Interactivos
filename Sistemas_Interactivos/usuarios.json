@@ -1,0 +1,22 @@
+[
+    {
+        "tipo": "cliente",
+        "nombre": "Marta Perez",
+        "contraseña": "1111"
+    },
+    {
+        "tipo": "cliente",
+        "nombre": "Jorge Ramirez",
+        "contraseña": "0000"
+    },
+    {
+        "tipo": "cliente",
+        "nombre": "Francisco Garcia",
+        "contraseña": "1234"
+    },
+    {
+        "tipo": "personal",
+        "nombre": "Javier Lopez",
+        "contraseña": "9999"
+    }
+]

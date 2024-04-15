@@ -1,0 +1,191 @@
+#main-container {
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 10% 10% 52.5% 15% 12.5%;
+}
+
+#main-title {
+    grid-row: 2;
+    margin: 10px 10px;
+    justify-content: center;
+    align-items: center;
+    color: rgb(227, 0, 0);
+}
+
+#main-title h2 {
+    margin-top: 5px;
+}
+
+#orders-list {
+    /* Recordar poner alert en z-index para que salga encima */
+    display: grid;
+    grid-row-start: 3;
+    grid-row-end: 5;
+    grid-template-rows: auto;
+    grid-gap: 10px;
+    padding: 10px;
+    overflow: scroll;
+}
+
+.order-details {
+    padding: 30px;
+    display: flex;
+    text-align: left;
+    background-color: rgba(217, 217, 217, 0.3);
+    border-radius: 30px;
+    flex-direction: column;
+    font-size: large;
+    position: relative; /* Añade posicionamiento relativo al contenedor */
+}
+
+.order-details button {
+    /* Eliminar el estilo predeterminado del botón */
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    position: absolute; /* Cambia a posicionamiento absoluto */
+    bottom: 30px; /* Ajusta la distancia desde la parte inferior */
+    right: 30px; /* Ajusta la distancia desde el borde derecho */
+    text-decoration: underline;
+}
+
+
+
+/* ========= Pop up ========= */
+
+#details-pop-up {
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /*grid / none*/
+    grid-template-rows: 10% 10% 52.5% 15% 12.5%;
+    overflow: scroll;
+    background-color: white;
+}
+
+#details-pop-up-title {
+    background-color: white;
+    grid-row: 2;
+    margin: 10px 10px;
+    justify-content: center;
+    align-items: center;
+    color: rgb(227, 0, 0);
+}
+
+#qr {
+    background-color: white;
+    display: grid;
+    grid-row-start: 3;
+    grid-row-end: 5;
+}
+
+#instructions {
+    color: rgb(227, 0, 0);
+    font-size: large;
+    padding: 20px;
+}
+
+
+.qr-img {
+    width: 100%;
+}
+
+#order-id {
+    font-size: large;
+}
+
+#items-list {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+.item {
+    display: flex;
+    flex: 1; 
+    padding: 30px;
+    background-color: rgba(217, 217, 217, 0.3);
+    border-radius: 30px;
+    font-size: large;
+    height: 120px;
+    margin: 20px;
+}
+
+.item-details {
+    flex: 1; 
+    text-align: left; /* Alinea el texto a la izquierda */
+    display: flex; /* Hace que el contenido se comporte como un contenedor flex */
+    flex-direction: column;
+    padding: 10px;
+}
+
+.item-name {
+    font-weight: bold;
+    font-size: larger;
+    margin-bottom: 5px;
+    white-space: nowrap; /* No permitir envoltura de texto */
+    overflow: hidden; /* Ocultar texto que exceda el ancho máximo */
+    text-overflow: ellipsis; /* Mostrar puntos suspensivos cuando el texto se recorta */
+    max-width: 150px; /* Ancho máximo permitido */
+}
+
+.item-name:hover {
+    white-space: normal; /* Permitir que el texto se envuelva cuando se pasa el mouse */
+}
+
+.message {
+    display: none;
+    position: relative;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: black;
+    height: auto;
+    left: 70px;
+}
+
+.item-details:hover .message {
+    display: block;
+}
+
+.item-brand {
+    margin-bottom: 5px;
+}
+
+.item-size {
+    margin-bottom: 5px;
+}
+
+.item-price {
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+
+.item-photo {
+    flex: 0 0 auto; 
+    padding: 10px;
+}
+
+.item-photo-img {
+    max-width: 100%; 
+    height: 100px; 
+}
+
+.separador {
+    height: 70px;
+}

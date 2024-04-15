@@ -1,0 +1,50 @@
+[
+    {
+        "cliente": "Marta Perez",
+        "pedido": "123456A",
+        "estado": "Pendiente de envio",
+        "llegada": "-",
+        "fecha": "16/3/2024",
+        "items": [1,2]
+    },
+    {
+        "cliente": "Marta Perez",
+        "pedido": "434280J",
+        "estado": "En reparto",
+        "llegada": "tarde",
+        "fecha": "11/3/2024",
+        "items": [3]
+    },
+    {
+        "cliente": "Marta Perez",
+        "pedido": "047229K",
+        "estado": "Entregado",
+        "llegada": "-",
+        "fecha": "12/3/2024",
+        "items": [18]
+    },
+    {
+        "cliente": "Jorge Ramirez",
+        "pedido": "993756J",
+        "estado": "Recogido en tienda",
+        "llegada": "-",
+        "fecha": "28/3/2024",
+        "items": [4,10]
+    },
+    {
+        "cliente": "Jorge Ramirez",
+        "pedido": "727891E",
+        "estado": "En reparto",
+        "llegada": "tarde",
+        "fecha": "11/3/2024",
+        "items": [17]
+    },
+    {
+        "cliente": "Francisco Garcia",
+        "pedido": "326402U",
+        "estado": "Entregado",
+        "llegada": "-",
+        "fecha": "1/4/2024",
+        "items": [5,6]
+    }
+]
