@@ -174,6 +174,10 @@ var mi_carrito = [
 ]
 
 mi_carrito =[]
+
+var ordenActual = 'nombre'; // Orden inicial por nombre
+var opcionesOrden = ['nombre', 'precio', 'talla']; // Opciones de orden disponibles
+
 /* FUNCION PARA RECUPERAR LOS PRODUCTOS */
 
 /* FUNCION PARA RECUPERAR CARRITOS */
@@ -230,12 +234,14 @@ console.log(mi_carrito);
 
 /* FUNCION QUE AÑADE ITEMS FAVORITOS DEL CLIENTE EN DIVS */
 function renderItems(items) {
+    var itemsOrdenados = ordenarProductos(items, ordenActual);
+
     var List = document.getElementById('items-list');
     
     // Limpiar el contenedor antes de renderizar los elementos nuevamente
     List.innerHTML = '';
 
-    items.forEach(function(item) {
+    itemsOrdenados.forEach(function(item) {
         var itemDiv = document.createElement('div');
         itemDiv.classList.add('item');
 
@@ -288,7 +294,108 @@ function renderItems(items) {
     });
 }
 
+/* ELIMINADO DE PRODUCTOS */
+
+// Función para detectar el deslizado a la derecha
+function removeOnSwipe(itemId) {
+    var productElement = document.getElementById(itemId);
+  
+    let startX;
+    let startY;
+    let distX;
+    let distY;
+  
+    productElement.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+    });
+  
+    productElement.addEventListener('touchmove', function(e) {
+        if (!startX || !startY) {
+            return;
+        }
+  
+        const touch = e.touches[0];
+        distX = touch.clientX - startX;
+        distY = touch.clientY - startY;
+  
+        // Si el desplazamiento horizontal es mayor que el vertical, consideramos que es un deslizamiento horizontal
+        if (Math.abs(distX) > Math.abs(distY)) {
+            e.preventDefault(); // Evitar el desplazamiento vertical de la página
+        }
+    });
+  
+    productElement.addEventListener('touchend', function() {
+        // Si el desplazamiento horizontal es positivo (hacia la derecha) y suficiente, eliminamos la tarea
+        if (distX > 100) { // Ajusta el valor según sea necesario
+            remove(itemId);
+        }
+        startX = startY = distX = distY = 0;
+    });
+  }
+
+//Función para eliminar producto
+function remove(itemId) {
+    const itemIndex = mi_carrito.findIndex(item => item.id === itemId);
+      if (itemIndex !== -1) {
+          mi_carrito.splice(taskIndex, 1);
+  
+          // Eliminar el producto del DOM
+          const productElement = document.getElementById(itemId);
+          if (productElement) {
+              productElement.remove();
+          }
+  
+          console.log('Producto eliminado:', itemId);
+      }
+  }
+
+/* ORDENADO DE PRODUCTOS */
+
+document.body.addEventListener('dblclick', function() {
+    // Obtener el índice de la opción de orden actual
+    var currentIndex = opcionesOrden.indexOf(ordenActual);
+
+    // Avanzar al siguiente índice cíclicamente
+    var nextIndex = (currentIndex + 1) % opcionesOrden.length;
+
+    // Actualizar el orden actual al siguiente en la lista
+    ordenActual = opcionesOrden[nextIndex];
+
+    // Volver a renderizar los productos con el nuevo orden
+    renderItems(ordenarProductos(mi_carrito, ordenActual));
+});
+
+
+function ordenarProductos(productos, criterio) {
+    // Copiar la lista de productos para no modificar la original
+    var productosOrdenados = productos.slice();
+
+    // Comparador personalizado según el criterio de orden
+    productosOrdenados.sort(function(a, b) {
+        if (criterio === 'nombre') {
+            return a.name.localeCompare(b.name); // Ordenar por nombre
+        } else if (criterio === 'precio') {
+            // Convertir precios a números para ordenar adecuadamente
+            var precioA = parseFloat(a.price.replace(',', '.'));
+            var precioB = parseFloat(b.price.replace(',', '.'));
+            return precioA - precioB; // Ordenar por precio
+        } else if (criterio === 'talla') {
+            return a.size.localeCompare(b.size); // Ordenar por talla
+        }
+    });
+
+    return productosOrdenados;
+}
+
 /* ========== ONLOAD ========== */
 window.onload = function() {
     renderItems(mi_carrito);
 };
+
+/* BOTÓN PAGO */
+document.getElementById('boton-pago').addEventListener('click', function() {
+    // Redireccionar a la página de pago al hacer clic en el botón
+    window.location.href = 'pagar.html';
+});
