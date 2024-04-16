@@ -6,6 +6,8 @@
         <title>Cesta</title>
         <link rel = "stylesheet" href = "./style/style.css">
         <link rel = "stylesheet" href = "./style/cesta.css">
+        <script src="/socket.io/socket.io.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     </head>
     <body>
         <header>
@@ -29,7 +31,15 @@
                     
                 </div>
                 <button id="boton-pago">Proceder al pago</button>
-                
+                <!-- Todo esto de modal hay que meterlo abajo -->
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                      <span class="close">&times;</span>
+                      <p>Por favor, pulse sobre el micrófono y diga "PAGAR" para proceder al pago.</p>
+                      <!-- Icono de micrófono -->
+                      <i class="fas fa-microphone microphone-icon" id="microphoneIcon"></i>
+                    </div>
+                </div>
             </div>
             <div id="grey-window">
                 <div id="alert">
@@ -38,6 +48,12 @@
                     <p>En unos momentos se acercará alguien para ayudarle</p>
                     <button id="cancel-button">Cancelar</button>
                 </div>
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>Por favor, pulse sobre el micrófono y diga "PAGAR" para proceder al pago.</p>
+                    <!-- Icono de micrófono -->
+                    <i class="fas fa-microphone microphone-icon" id="microphoneIcon"></i>
+                  </div>
             </div>
             <div id="tool-bar-container">
                 <div id="tool-bar">

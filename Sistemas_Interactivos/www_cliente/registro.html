@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head lang="es-ES">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inicio</title>
+        <script src="/socket.io/socket.io.js"></script>
+        <link rel = "stylesheet" href = "./style/style.css">
+        <link rel = "stylesheet" href = "./style/registro.css">
+    </head>
+    <body>
+        <header>
+            <div class="header-container">
+                <div id="title">
+                    <img id="logo_index" src="style/images/Macys_logo.png" alt="Logo AppsKES">
+                </div>
+                <div id="header-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="rgb(227, 0, 0)" class="bi bi-cart" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                    </svg>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div id="main-container">
+                <div id = "main-title">
+                    <h2>Bienvenido a Macy's</h2>
+                    <p>Para utilizar la app primero debe registrarse o iniciar sesión</p>
+                </div>
+                <div id = "main-register">
+                    <form class="modal-content" action="./info.html">
+                        <div class="container">
+                          <label for="name"><b>Nombre de usuario</b></label>
+                          <input type="text" placeholder="Introduzca su nombre de usuario" name="email" required>
+                    
+                          <label for="psw"><b>Contraseña</b></label>
+                          <input type="password" placeholder="Introduzca una contraseña" name="psw" required>
+                    
+                          <label for="psw-repeat"><b>Confirma la contraseña</b></label>
+                          <input type="password" placeholder="Repita su contraseña" name="psw-repeat" required>
+                          
+                          <label for="tipo"><b>Elija si es Cliente o Personal de tienda</b></label>
+                            <select name="tipo" id="tipo" required>
+                                <option value="">Seleccione...</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="personal_tienda">Personal de Tienda</option>
+                            </select>
+
+
+                          <label>
+                            <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Recuérdame
+                          </label>
+                          <p>Si continúas, aceptas los <a href="#" style="color:dodgerblue">Términos del servicio</a> y confirmas que has leído nuestra <a href="#" style="color:dodgerblue">Política de privacidad</a></p>
+                          <div class="clearfix">
+                            <button type="submit" class="signupbtn">Continuar</button>
+                          </div>
+                          <p>¿Ya eres miembro? <a href="#" style="color:dodgerblue" id="log-in-link">Iniciar sesión</a></p>
+                        </div>
+                      </form>
+                </div>
+                <div id = "main-log-in">
+                    <form class="modal-content" action="./info.html">
+                        <div class="container">
+                            <label for="username"><b>Nombre de usuario</b></label>
+                            <input type="text" placeholder="Introduzca su nombre de usuario" id="username" name="username" required>
+                    
+                            <label for="password"><b>Contraseña</b></label>
+                            <input type="password" placeholder="Introduzca una contraseña" id="password" name="password" required>
+                    
+                            <label>
+                                <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Recuérdame
+                            </label>
+                            <div class="clearfix">
+                                <button type="submit" class="signupbtn" id="boton-log-in">Iniciar Sesión</button>
+                            </div>
+                            <p id="mensaje-error" style="color:red;"></p>
+                            <p>¿Aún no eres miembro? <a href="#" style="color:dodgerblue" id="registrate-link">Regístrate</a></p>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+
+            <div id="tool-bar-container">
+                <div id="tool-bar">
+                    <div class="bar-icons" id="info-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-info-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                        </svg>
+                    </div>
+                    <div class="bar-icons" id="qr-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-qr-code-scan" viewBox="0 0 16 16">
+                            <path d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5M.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5M4 4h1v1H4z"/>
+                            <path d="M7 2H2v5h5zM3 3h3v3H3zm2 8H4v1h1z"/>
+                            <path d="M7 9H2v5h5zm-4 1h3v3H3zm8-6h1v1h-1z"/>
+                            <path d="M9 2h5v5H9zm1 1v3h3V3zM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-3V8zm2 2H9V9h1zm4 2h-1v1h-2v1h3zm-4 2v-1H8v1z"/>
+                            <path d="M12 9h2V8h-2z"/>
+                        </svg>
+                    </div>
+                    <div class="bar-icons" id="box-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-box" viewBox="0 0 16 16">
+                            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+                        </svg>
+                    </div>
+                    <div class="bar-icons" id="fav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
+                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                          </svg>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src="script/registro.js"></script>
+    </body>
+</html>

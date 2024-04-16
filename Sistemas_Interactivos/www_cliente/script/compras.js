@@ -1,3 +1,8 @@
+var socket = io.connect('http://localhost:5500');
+  socket.on('connect', function(data) {
+      socket.emit('join', 'Hello World from client');
+  });
+
 /* ========== JSONs ========== */
 var productos = [
     {
@@ -146,7 +151,7 @@ var productos = [
     }
 
 ]
-
+/*
 var pedidos = [
     {
         "cliente": "Marta Perez",
@@ -197,32 +202,25 @@ var pedidos = [
         "items": [5,6]
     }
 ]
-
+*/ 
+var pedidos = [];
 var ordersData = [];
 
-/* FUNCION PARA RECUPERAR LOS PRODUCTOS */
-const loadProductos = async () => {
-    try {
-        productos = [];
-        const response = await fetch("/productos/get");   // Fetch tasks from server
-        console.log(response);
-        const data = await response.json();
-        console.log("data: ", data);
-  
-        data.forEach(task => {
-            productos.push(task);
-        });
-  
-        console.log('Lista: ', productos);
-        renderTasks();
-  
-    } catch (error) {
-      console.error("Error fetching pedidos:", error);
-    }
-    console.log(productos);
-};
+/* FUNCION PARA RECUPERAR LOS PEDIDOS */
 
-// loadProductos();
+// Solicitar la lista de pedidos al servidor
+socket.emit('pedidos');
+
+// Manejar la respuesta del servidor
+socket.on('pedidos', function(productos) {
+    console.log(productos);
+    productos.forEach(elemento => {
+        pedidos.push(elemento);
+    });
+});
+
+console.log("holaaaaaa", pedidos);
+console.log(productos);
 
 /* FUNCION PARA RECUPERAR LOS PEDIDOS DEL CLIENTE */
 

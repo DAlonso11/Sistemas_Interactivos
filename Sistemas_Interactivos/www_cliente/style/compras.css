@@ -137,7 +137,7 @@
     white-space: nowrap; /* No permitir envoltura de texto */
     overflow: hidden; /* Ocultar texto que exceda el ancho máximo */
     text-overflow: ellipsis; /* Mostrar puntos suspensivos cuando el texto se recorta */
-    max-width: 150px; /* Ancho máximo permitido */
+    max-width: 150px; /* Ancho máximo permitido 100vh*/
 }
 
 .item-name:hover {

@@ -1,3 +1,8 @@
+var socket = io.connect('http://localhost:5500');
+  socket.on('connect', function(data) {
+      socket.emit('join', 'Hello World from client escaner');
+  });
+
 var video = document.getElementById('video-feed');
 
 // Función para acceder a la cámara

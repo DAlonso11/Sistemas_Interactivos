@@ -1,3 +1,8 @@
+var socket = io.connect('http://localhost:5500');
+  socket.on('connect', function(data) {
+      socket.emit('join', 'Hello World from client');
+  });
+
 /* ========== JSONs ========== */
 var productos = [
     {
@@ -397,13 +402,62 @@ function ordenarProductos(productos, criterio) {
     return productosOrdenados;
 }
 
+/* IR DE LA PAGINA DE CESTA A LA PAGINA DE COMPRAS */
+
+document.getElementById('boton-pago').addEventListener('click', function() {
+    // Mostrar el modal del pago
+    document.getElementById('myModal').style.display = 'block';
+});
+  
+// Cerrar el modal del pago
+document.getElementsByClassName('close')[0].addEventListener('click', function() {
+    document.getElementById('myModal').style.display = 'none';
+});
+  
+// Iniciar reconocimiento de voz al hacer clic en el icono de micrófono
+document.getElementById('microphoneIcon').addEventListener('click', function() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function(stream) {
+            // Crear un nuevo objeto SpeechRecognition
+            var recognition = new window.webkitSpeechRecognition();
+
+            // Idioma español y empezar a escuchar
+            recognition.lang = 'es-ES';
+            recognition.start();
+
+            // Reconocer la voz y transcribir resultado
+            recognition.onresult = function(event) {
+                var transcript = event.results[0][0].transcript.trim().toUpperCase();
+
+                // Comprobar la transcripcion, detener reconocimiento y llevar a pagina de pago.
+                if (transcript === 'PAGAR') {
+                    recognition.stop();
+                    window.location.href = 'pagar.html';
+                } 
+        
+                else {
+                    // Si no coincide, mostrar un mensaje de error
+                    alert('Comando no reconocido. Por favor, intentelo de nuevo.');
+                }
+            };
+
+            // Manejar errores
+            recognition.onerror = function(event) {
+                alert('Error al reconocer el comando de voz. Por favor, intenta de nuevo.');
+            };
+
+            // Al detener reconocimiento parar el streaming de audio
+            recognition.onend = function() {
+                stream.getTracks().forEach(track => track.stop());
+            };
+        })
+        .catch(function(error) {
+            // Manejar errores
+            alert('No se puede acceder al micrófono. Asegúrate de permitir el acceso.');
+        });
+});
+
 /* ========== ONLOAD ========== */
 window.onload = function() {
     renderItems(mi_carrito);
 };
-
-/* BOTÓN PAGO */
-document.getElementById('boton-pago').addEventListener('click', function() {
-    // Redireccionar a la página de pago al hacer clic en el botón
-    window.location.href = 'pagar.html';
-});
