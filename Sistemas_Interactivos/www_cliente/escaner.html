@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Escaner</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
         <link rel = "stylesheet" href = "./style/style.css">
         <link rel = "stylesheet" href = "./style/escaner.css">
     </head>
@@ -30,7 +30,8 @@
                     <p>Apunte hacia el QR de la etiqueta del artículo para añadirlo</p>
                 </div>
                 <div id="escaner">
-                    <video id="video-feed" autoplay></video>
+                    <div id="video-feed" ></div>
+                    <canvas id="canvas" style="display: none;"></canvas>
                 </div>
             </div>
             
@@ -72,6 +73,9 @@
                 </div>
             </div>
         </main>
+        <script
+            src="https://unpkg.com/html5-qrcode">
+        </script>
         <script src="script/alert.js"></script>
         <script src="script/pages.js"></script>
         <script src="script/escaner.js"></script>
