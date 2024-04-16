@@ -243,6 +243,7 @@ function renderItems(items) {
 
     itemsOrdenados.forEach(function(item) {
         var itemDiv = document.createElement('div');
+        itemDiv.id = 'item' + item.id;
         itemDiv.classList.add('item');
 
         var itemDetailsDiv = document.createElement('div');
@@ -285,20 +286,22 @@ function renderItems(items) {
         itemPhotoDiv.appendChild(itemPhotoImg);
         
         // Almacenar el ID del artículo actual
-        var currentItemId = item.id;
+        var ItemId = item.id;
 
         itemDiv.appendChild(itemDetailsDiv);
         itemDiv.appendChild(itemPhotoDiv);
 
         List.appendChild(itemDiv);
+
+        removeOnSwipe(item)
     });
 }
 
 /* ELIMINADO DE PRODUCTOS */
 
 // Función para detectar el deslizado a la derecha
-function removeOnSwipe(itemId) {
-    var productElement = document.getElementById(itemId);
+function removeOnSwipe(item) {
+    var productElement = document.getElementById('item' + item.id);
   
     let startX;
     let startY;
@@ -329,31 +332,34 @@ function removeOnSwipe(itemId) {
     productElement.addEventListener('touchend', function() {
         // Si el desplazamiento horizontal es positivo (hacia la derecha) y suficiente, eliminamos la tarea
         if (distX > 100) { // Ajusta el valor según sea necesario
-            remove(itemId);
+            remove(item);
         }
         startX = startY = distX = distY = 0;
     });
   }
 
 //Función para eliminar producto
-function remove(itemId) {
-    const itemIndex = mi_carrito.findIndex(item => item.id === itemId);
+function remove(item) {
+    console.log(item);
+    const itemIdToRemove = item.id;
+    const itemIndex = mi_carrito.findIndex(item => item.id === itemIdToRemove);
       if (itemIndex !== -1) {
-          mi_carrito.splice(taskIndex, 1);
+          mi_carrito.splice(itemIndex, 1);
   
           // Eliminar el producto del DOM
-          const productElement = document.getElementById(itemId);
+          const productElement = document.getElementById('item'+itemIdToRemove);
           if (productElement) {
               productElement.remove();
           }
   
-          console.log('Producto eliminado:', itemId);
+          console.log('Producto eliminado:', itemIdToRemove);
       }
   }
 
 /* ORDENADO DE PRODUCTOS */
 
-document.body.addEventListener('dblclick', function() {
+document.getElementById("items-list").addEventListener('dblclick', function(e) {
+    e.preventDefault();
     // Obtener el índice de la opción de orden actual
     var currentIndex = opcionesOrden.indexOf(ordenActual);
 
@@ -362,6 +368,8 @@ document.body.addEventListener('dblclick', function() {
 
     // Actualizar el orden actual al siguiente en la lista
     ordenActual = opcionesOrden[nextIndex];
+
+    console.log("Orden actual: ", ordenActual)
 
     // Volver a renderizar los productos con el nuevo orden
     renderItems(ordenarProductos(mi_carrito, ordenActual));
