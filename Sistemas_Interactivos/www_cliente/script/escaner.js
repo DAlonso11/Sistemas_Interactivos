@@ -20,11 +20,25 @@ function activateCamera() {
     }
 }
 
+function getCookie(nombre) {
+    var cookies = document.cookie.split('; ');
+    
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].split('=');
+        if (cookie[0] === nombre) {
+            return decodeURIComponent(cookie[1]); 
+        }
+    }
+    return null;
+}
+
+
 // Función para iniciar el escaneo automáticamente
 function startScanning() {
     // If found your qr code
     function onScanSuccess(decodeText, decodeResult) {
-        alert("Your QR code is: " + decodeText);
+        console.log(decodeText)
+        sendSocket(decodeText);
     }
 
     let htmlscanner = new Html5QrcodeScanner(
@@ -32,6 +46,20 @@ function startScanning() {
         { fps: 10, qrbox: 250 }
     );
     htmlscanner.render(onScanSuccess);
+}
+
+function sendSocket(id) {
+    var name = getCookie("username");
+    console.log(name, "name")
+    socket.emit('new_product', parseInt(id), name);
+
+    // Manejar la respuesta del servidor
+    socket.on('new_product', function(res) {
+        console.log(res);
+        if (res === 0) {
+            console.log("Success");
+        }
+    });
 }
 
 // Activar la cámara inicialmente

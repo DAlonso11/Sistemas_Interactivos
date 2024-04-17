@@ -7,13 +7,18 @@
         <link rel = "stylesheet" href = "./style/style.css">
         <link rel = "stylesheet" href = "./style/cesta.css">
         <script src="/socket.io/socket.io.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     </head>
     <body>
         <header>
             <div class="header-container">
                 <div id="title">
-                    <img id="logo_index" src="../images/Macys_logo.png" alt="Logo AppsKES">
+                    <img id="logo_index" src="style/images/Macys_logo.png" alt="Logo AppsKES">
+                </div>
+                <div id="micro-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="rgb(227, 0, 0)" class="bi bi-mic" viewBox="0 0 16 16">
+                        <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"/>
+                        <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3"/>
+                      </svg>
                 </div>
                 <div id="header-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="rgb(227, 0, 0)" class="bi bi-cart-fill" viewBox="0 0 16 16">
@@ -31,15 +36,6 @@
                     
                 </div>
                 <button id="boton-pago">Proceder al pago</button>
-                <!-- Todo esto de modal hay que meterlo abajo -->
-                <div id="myModal" class="modal">
-                    <div class="modal-content">
-                      <span class="close">&times;</span>
-                      <p>Por favor, pulse sobre el micrófono y diga "PAGAR" para proceder al pago.</p>
-                      <!-- Icono de micrófono -->
-                      <i class="fas fa-microphone microphone-icon" id="microphoneIcon"></i>
-                    </div>
-                </div>
             </div>
             <div id="grey-window">
                 <div id="alert">
@@ -48,12 +44,6 @@
                     <p>En unos momentos se acercará alguien para ayudarle</p>
                     <button id="cancel-button">Cancelar</button>
                 </div>
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <p>Por favor, pulse sobre el micrófono y diga "PAGAR" para proceder al pago.</p>
-                    <!-- Icono de micrófono -->
-                    <i class="fas fa-microphone microphone-icon" id="microphoneIcon"></i>
-                  </div>
             </div>
             <div id="tool-bar-container">
                 <div id="tool-bar">

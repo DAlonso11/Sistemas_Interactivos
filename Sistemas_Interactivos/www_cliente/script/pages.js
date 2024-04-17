@@ -38,5 +38,5 @@ document.getElementById("info-icon").addEventListener('click', info);
 document.getElementById("qr-icon").addEventListener('click', escaner);
 document.getElementById("box-icon").addEventListener('click', compras);
 document.getElementById("fav-icon").addEventListener('click', favoritos);
-//document.getElementById("boton-pago").addEventListener('click', pagar);
+document.getElementById("boton-pago").addEventListener('click', pagar);
 

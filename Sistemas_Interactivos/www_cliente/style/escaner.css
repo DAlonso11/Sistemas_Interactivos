@@ -40,11 +40,3 @@ video {
     max-width: 100%;
     max-height: 204.75px;
 }
-
-#video-feed__dashboard_section {
-    visibility: hidden;
-}
-
-#video-feed__dashboard {
-    visibility: hidden;
-}

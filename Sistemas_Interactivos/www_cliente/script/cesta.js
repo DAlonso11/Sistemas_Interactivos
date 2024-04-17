@@ -1,240 +1,50 @@
 var socket = io.connect('http://localhost:5500');
   socket.on('connect', function(data) {
       socket.emit('join', 'Hello World from client');
-  });
+});
 
-/* ========== JSONs ========== */
-var productos = [
-    {
-        "id" : 1,
-        "category": "Mujer",
-        "name" : "Bermuda Lino Serena",
-        "brand" : "Polin et Moi",
-        "size" : "M",
-        "price" : "45,95€"
-    },
-    {
-        "id" : 2,
-        "category": "Mujer",
-        "name" : "Blusa Blissful · Blanco",
-        "brand" : "The-Are",
-        "size" : "M",
-        "price" : "49,95€"
-    },
-    {
-        "id" : 3,
-        "category": "Mujer",
-        "name" : "Top asimétrico estampado tie dye soles",
-        "brand" : "Brownie",
-        "size" : "S",
-        "price" : "35,90€"
-    },
-    {
-        "id" : 4,
-        "category": "Hombre",
-        "name" : "Hoodie Classic Blanco Roto",
-        "brand" : "Blue Banana",
-        "size" : "L",
-        "price" : "64,90€"
-    },
-    {
-        "id" : 5,
-        "category": "Hombre",
-        "name" : "Polo Básico Calavera",
-        "brand" : "Scalpers",
-        "size" : "L",
-        "price" : "64,90€"
-    },
-    {
-        "id" : 6,
-        "category": "Hombre",
-        "name" : "Vaquero de hombre 502 ™ Taper",
-        "brand" : "Levi's",
-        "size" : "L",
-        "price" : "120,00€"
-    },
-    {
-        "id" : 7,
-        "category": "Infantil",
-        "name" : "Vestido dobby",
-        "brand" : "Gocco",
-        "size" : "5 años",
-        "price" : "34,99€"
-    },
-    {
-        "id" : 8,
-        "category": "Infantil",
-        "name" : "Camisa de niño de manga larga a rayas",
-        "brand" : "Dadati",
-        "size" : "7 años",
-        "price" : "25,99€"
-    },
-    {
-        "id" : 9,
-        "category": "Infantil",
-        "name" : "Ranita bebés sin manga gas",
-        "brand" : "Coconut",
-        "size" : "3-6 meses",
-        "price" : "49,00€"
-    },
-    {
-        "id" : 10,
-        "category": "Zapatos",
-        "name" : "Zapatillas Nike Dunk Low",
-        "brand" : "Nike",
-        "size" : "38",
-        "price" : "129,99€"
-    },
-    {
-        "id" : 11,
-        "category": "Zapatos",
-        "name" : "Zapatillas Adidas Samba",
-        "brand" : "Adidas",
-        "size" : "37",
-        "price" : "120,00€"
-    },
-    {
-        "id" : 12,
-        "category": "Zapatos",
-        "name" : "V-12 Leather White Steel",
-        "brand" : "Veja",
-        "size" : "39",
-        "price" : "160,00€"
-    },
-    {
-        "id" : 13,
-        "category": "Joyeria",
-        "name" : "Pendientes pequeños de aro de plata 925 bañada en oro amarillo de 18K con textura de bambú",
-        "brand" : "Aristocrazy",
-        "size" : "Unitalla",
-        "price" : "85,00€"
-    },
-    {
-        "id" : 14,
-        "category": "Joyeria",
-        "name" : "Pendientes Falling Dots L de aleación de metales bañados en oro",
-        "brand" : "Singularu",
-        "size" : "Unitalla",
-        "price" : "17,99€"
-    },
-    {
-        "id" : 15,
-        "category": "Joyeria",
-        "name" : "Collar Pandora Moments bañado en oro",
-        "brand" : "Pandora",
-        "size" : "Unitalla",
-        "price" : "89,00€"
-    },
-    {
-        "id" : 16,
-        "category": "Casa",
-        "name" : "Juego de sábanas Algodón 3 piezas - Basic Blanco",
-        "brand" : "La Mallorquina",
-        "size" : "Unitalla",
-        "price" : "47,95€"
-    },
-    {
-        "id" : 17,
-        "category": "Casa",
-        "name" : "Pack de 2 vasos de vidrio",
-        "brand" : "H&M Home",
-        "size" : "Unitalla",
-        "price" : "9,99€"
-    },
-    {
-        "id" : 18,
-        "category": "Casa",
-        "name" : "Set de 3 herméticos Clip & Close",
-        "brand" : "Emsa",
-        "size" : "Unitalla",
-        "price" : "13,96€"
+function getCookie(nombre) {
+    var cookies = document.cookie.split('; ');
+    
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].split('=');
+        if (cookie[0] === nombre) {
+            return decodeURIComponent(cookie[1]); 
+        }
     }
+    return null;
+}
 
-]
-
-var carritos = [
-    {
-        "cliente": "Marta Perez",
-        "items": [13]
-    },
-    {
-        "cliente": "Jorge Ramirez",
-        "items": []
-    },
-    {
-        "cliente": "Francisco Garcia",
-        "items": []
-    }
-]
-
-var mi_carrito = [
-    {
-        "id" : 13,
-        "category": "Joyeria",
-        "name" : "Pendientes pequeños de aro de plata 925 bañada en oro amarillo de 18K con textura de bambú",
-        "brand" : "Aristocrazy",
-        "size" : "Unitalla",
-        "price" : "85,00€"
-    }
-]
-
-mi_carrito =[]
+var mi_carrito = []
+var productos = []
 
 var ordenActual = 'nombre'; // Orden inicial por nombre
 var opcionesOrden = ['nombre', 'precio', 'talla']; // Opciones de orden disponibles
 
 /* FUNCION PARA RECUPERAR LOS PRODUCTOS */
+// Solicitar la lista de pedidos al servidor
+socket.emit('productos');
 
+// Manejar la respuesta del servidor
+socket.on('productos', function(pdct) {
+    pdct.forEach(elemento => {
+        productos.push(elemento);
+    });
+});
 /* FUNCION PARA RECUPERAR CARRITOS */
+var cookiename = getCookie("username");
+socket.emit('filterJSON', cookiename, "carritos");
 
+// Manejar la respuesta del servidor
+socket.on('mi_carrito', function(c) {
+    c.forEach(elemento => {
+        mi_carrito.push(elemento);
+    });
+});
 
 /* FUNCION PARA ENCONTRAR EL CARRITO DEL CLIENTE DE INICIO DE SESIÓN */
 
 /* FUNCION PARA ENCONTRAR EL CARRITO DEL CLIENTE DE INICIO DE SESIÓN */
-function obtenerCarritoDesdeCookie() {
-    var clienteCookie = "";
-    var carritoCliente = [];
-
-    // Obtener el valor de la cookie "cliente"
-    var cookie = document.cookie;
-    console.log("cookie: ", cookie);
-    var cookieItems = cookie.split(';');
-    cookieItems.forEach(function(item) {
-        var parts = item.trim().split('=');
-        if (parts[0] === "username") {
-            clienteCookie = parts[1];
-        }
-    });
-    console.log("clienteCookie: ", clienteCookie); // Agregado para depurar
-    
-    // Encontrar el carrito del cliente
-    var carritoCliente = carritos.find(function(carrito) {
-        return carrito.cliente === clienteCookie;
-    });
-    
-    console.log("carritoCliente: ", carritoCliente); // Agregado para depurar
-
-    // Si no se encuentra el carrito del cliente, retornar un mensaje
-    if (!carritoCliente) {
-        console.log("El cliente no tiene ningún artículo en su carrito.");
-        return [];
-    }
-
-    // Encontrar los productos correspondientes a los IDs en el carrito
-    var productosEnCarrito = carritoCliente.items.map(function(itemId) {
-        return productos.find(function(producto) {
-            return producto.id === itemId;
-        });
-    });
-
-    return productosEnCarrito; // Devolver el carrito encontrado
-}
-
-// Uso de la función para obtener el carrito del cliente desde la cookie
-mi_carrito = obtenerCarritoDesdeCookie();
-console.log(mi_carrito);
-
-
 
 
 /* FUNCION QUE AÑADE ITEMS FAVORITOS DEL CLIENTE EN DIVS */
@@ -285,7 +95,7 @@ function renderItems(items) {
 
         var itemPhotoImg = document.createElement('img');
         itemPhotoImg.classList.add('item-photo-img');
-        itemPhotoImg.src = "../images/" + item.name + ".png";
+        itemPhotoImg.src = "../style/images/" + item.name + ".png";
         itemPhotoImg.alt = item.name;
 
         itemPhotoDiv.appendChild(itemPhotoImg);
@@ -348,17 +158,26 @@ function remove(item) {
     console.log(item);
     const itemIdToRemove = item.id;
     const itemIndex = mi_carrito.findIndex(item => item.id === itemIdToRemove);
-      if (itemIndex !== -1) {
-          mi_carrito.splice(itemIndex, 1);
-  
-          // Eliminar el producto del DOM
-          const productElement = document.getElementById('item'+itemIdToRemove);
-          if (productElement) {
-              productElement.remove();
-          }
-  
-          console.log('Producto eliminado:', itemIdToRemove);
-      }
+        if (itemIndex !== -1) {
+            mi_carrito.splice(itemIndex, 1);
+            
+            //Eliminarlo del json
+            socket.emit("delete_product", cookiename, item.id)
+            socket.on('delete_product', function(res) {
+                console.log(res);
+                if (res === 0) {
+                    console.log("Success");
+                }
+            });
+
+            // Eliminar el producto del DOM
+            const productElement = document.getElementById('item'+itemIdToRemove);
+            if (productElement) {
+                productElement.remove();
+            }
+
+            console.log('Producto eliminado:', itemIdToRemove);
+        }
   }
 
 /* ORDENADO DE PRODUCTOS */
@@ -402,20 +221,9 @@ function ordenarProductos(productos, criterio) {
     return productosOrdenados;
 }
 
-/* IR DE LA PAGINA DE CESTA A LA PAGINA DE COMPRAS */
-
-document.getElementById('boton-pago').addEventListener('click', function() {
-    // Mostrar el modal del pago
-    document.getElementById('myModal').style.display = 'block';
-});
-  
-// Cerrar el modal del pago
-document.getElementsByClassName('close')[0].addEventListener('click', function() {
-    document.getElementById('myModal').style.display = 'none';
-});
-  
+ 
 // Iniciar reconocimiento de voz al hacer clic en el icono de micrófono
-document.getElementById('microphoneIcon').addEventListener('click', function() {
+document.getElementById('micro-icon').addEventListener('click', function() {
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(function(stream) {
             // Crear un nuevo objeto SpeechRecognition
