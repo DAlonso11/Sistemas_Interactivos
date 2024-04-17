@@ -4,12 +4,14 @@
 // FUNCION PARA VER EL POPUP
 function showPopup() {
     navigator.vibrate(1000);
-    document.getElementById("grey-window").style.visibility = "visible"
+    document.getElementById("grey-window").style.visibility = "visible";
+    document.getElementById("alert").style.visibility = "visible";
 }
 
 // FUNCION PARA CERRAR EL POPUP
 function closePopup() {
-    document.getElementById("grey-window").style.visibility = "hidden"
+    document.getElementById("grey-window").style.visibility = "hidden";
+    document.getElementById("alert").style.visibility = "hidden";
 }
 
 // FUNCION PARA SOLICITAR AYUDA AGITANDO EL DISPOSITIVO DE LADO A LADO

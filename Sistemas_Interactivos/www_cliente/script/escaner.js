@@ -5,6 +5,16 @@ var socket = io.connect('http://localhost:5500');
 
 var video = document.getElementById('video-feed');
 
+const productos = []
+
+socket.emit("productos");
+
+socket.on('productos', function(pdct) {
+    pdct.forEach(elemento => {
+        productos.push(elemento);
+    });
+});
+
 // Función para acceder a la cámara
 function activateCamera() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -32,13 +42,75 @@ function getCookie(nombre) {
     return null;
 }
 
+function showItem(id) {
+
+    var item = productos.find(element => element.id === id);
+
+    //document.getElementById("grey-window").style.visibility = "visible";
+
+    /*HELP DIEGO*/
+    //var container = document.getElementById("item-container");
+    //container.innerHTML = '';
+
+    /*
+    var itemDiv = document.createElement('div');
+    itemDiv.id = 'item' + item.id;
+    itemDiv.classList.add('item');
+
+    var itemDetailsDiv = document.createElement('div');
+    itemDetailsDiv.classList.add('item-details');
+
+    var itemNameDiv = document.createElement('div');
+    itemNameDiv.classList.add('item-name');
+    itemNameDiv.textContent = item.name;
+
+    var messageDiv = document.createElement('div');
+    messageDiv.classList.add('message');
+    messageDiv.textContent = item.name;
+
+    var itemBrandDiv = document.createElement('div');
+    itemBrandDiv.classList.add('item-brand');
+    itemBrandDiv.textContent = item.brand;
+
+    var itemSizeDiv = document.createElement('div');
+    itemSizeDiv.classList.add('item-size');
+    itemSizeDiv.textContent = "Talla: " + item.size;
+
+    var itemPriceDiv = document.createElement('div');
+    itemPriceDiv.classList.add('item-price');
+    itemPriceDiv.textContent = item.price;
+
+    itemDetailsDiv.appendChild(itemNameDiv);
+    itemDetailsDiv.appendChild(messageDiv); // Agregar el elemento de mensaje aquí
+    itemDetailsDiv.appendChild(itemBrandDiv);
+    itemDetailsDiv.appendChild(itemSizeDiv);
+    itemDetailsDiv.appendChild(itemPriceDiv);
+
+    var itemPhotoDiv = document.createElement('div');
+    itemPhotoDiv.classList.add('item-photo');
+
+    var itemPhotoImg = document.createElement('img');
+    itemPhotoImg.classList.add('item-photo-img');
+    itemPhotoImg.src = "../style/images/" + item.name + ".png";
+    itemPhotoImg.alt = item.name;
+
+    itemPhotoDiv.appendChild(itemPhotoImg);
+
+    itemDiv.appendChild(itemDetailsDiv);
+    itemDiv.appendChild(itemPhotoDiv);
+
+    List.appendChild(itemDiv);*/
+    document.getElementById('cesta').addEventListener('click', () => sendSocket(id, "carritos"));
+    document.getElementById('fav').addEventListener('click', () => sendSocket(id, "favoritos"));
+}
 
 // Función para iniciar el escaneo automáticamente
 function startScanning() {
     // If found your qr code
     function onScanSuccess(decodeText, decodeResult) {
-        console.log(decodeText)
-        sendSocket(decodeText);
+        console.log(decodeText);
+        showItem(decodeText);
+        //sendSocket(decodeText);
     }
 
     let htmlscanner = new Html5QrcodeScanner(
@@ -48,10 +120,10 @@ function startScanning() {
     htmlscanner.render(onScanSuccess);
 }
 
-function sendSocket(id) {
+function sendSocket(id, file) {
     var name = getCookie("username");
-    console.log(name, "name")
-    socket.emit('new_product', parseInt(id), name);
+    console.log(name, "name");
+    socket.emit('new_product', parseInt(id), name, file);
 
     // Manejar la respuesta del servidor
     socket.on('new_product', function(res) {

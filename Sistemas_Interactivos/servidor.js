@@ -57,8 +57,8 @@ function handleFilterJson(client, name, file) {
     });
 }
 
-function handleNewProduct(client, id, name) {
-    fs.readFile(__dirname + '/carritos.json', 'utf8', function(err, data) {
+function handleNewProduct(client, id, name, file) {
+    fs.readFile(__dirname + '/' + file +'.json', 'utf8', function(err, data) {
         if (err) {
             console.error("Error reading carritos.json:", err);
             res.status(500).send("Error interno del servidor");
@@ -70,7 +70,7 @@ function handleNewProduct(client, id, name) {
         carrito_name.items.push(id);
         carritos.splice(index, 1, carrito_name);
 
-        fs.writeFile(__dirname + '/carritos.json', JSON.stringify(carritos), err => {
+        fs.writeFile(__dirname + '/' + file +'.json', JSON.stringify(carritos), err => {
             if (err){
                 console.error("Error writing carritos.json:", err);
         }});
@@ -78,8 +78,8 @@ function handleNewProduct(client, id, name) {
     });
 }
 
-function handleDeleteProduct(client, name, id) {
-    fs.readFile(__dirname + '/carritos.json', 'utf8', function(err, data) {
+function handleDeleteProduct(client, name, id, file) {
+    fs.readFile(__dirname + '/' + file +'.json', 'utf8', function(err, data) {
         if (err) {
             console.error("Error reading carritos.json:", err);
             res.status(500).send("Error interno del servidor");
@@ -90,7 +90,7 @@ function handleDeleteProduct(client, name, id) {
         const index = carritos.findIndex(element => element.cliente === name);
         carrito_name.items.splice(index, 1);
 
-        fs.writeFile(__dirname + '/carritos.json', JSON.stringify(carritos), err => {
+        fs.writeFile(__dirname + '/' + file +'.json', JSON.stringify(carritos), err => {
             if (err){
                 console.error("Error writing carritos.json:", err);
         }});
@@ -110,6 +110,32 @@ function handleProductos(client) {
     });
 }
 
+function handleCrearPedido(client, pedido) {
+    fs.readFile(__dirname + '/pedidos.json', 'utf8', function(err, data) {
+        if (err) {
+            console.error("Error reading pedidos.json:", err);
+            res.status(500).send("Error interno del servidor");
+            return;
+        }
+        const pedidos = JSON.parse(data);
+        pedidos.push(pedido);
+        io.emit("crearPedidos", 0);
+    });
+}
+
+function handleNumPedido(client) {
+    fs.readFile(__dirname + '/pedidos.json', 'utf8', function(err, data) {
+        if (err) {
+            console.error("Error reading pedidos.json:", err);
+            res.status(500).send("Error interno del servidor");
+            return;
+        }
+        const pedidos = JSON.parse(data);
+        var l = pedidos.length;
+        io.emit("crearPedido", pedidos[l-1].pedido);
+    });
+}
+
 io.on('connection', function(client) {
     console.log('Client connected...');
 
@@ -121,17 +147,25 @@ io.on('connection', function(client) {
         handleFilterJson(client, name, file);
     });
 
-    client.on('new_product', function(id, name) {
-        handleNewProduct(client, id, name);
+    client.on('new_product', function(id, name, file) {
+        handleNewProduct(client, id, name, file);
     });
 
-    client.on('delete_product', function(name, id) {
-        handleDeleteProduct(client, name, id);
+    client.on('delete_product', function(name, id, file) {
+        handleDeleteProduct(client, name, id, file);
     })
 
     client.on('productos', function() {
         handleProductos(client);
     });
+    
+    client.on('crearPedido', function(pedido) {
+        handleCrearPedido(client, pedido);
+    });
+
+    client.on("numPedido", function() {
+        handleNumPedido(client);
+    })
 });
 
 

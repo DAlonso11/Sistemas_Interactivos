@@ -36,7 +36,7 @@ var cookiename = getCookie("username");
 socket.emit('filterJSON', cookiename, "carritos");
 
 // Manejar la respuesta del servidor
-socket.on('mi_carrito', function(c) {
+socket.on('filterJSON', function(c) {
     c.forEach(elemento => {
         mi_carrito.push(elemento);
     });
@@ -162,7 +162,7 @@ function remove(item) {
             mi_carrito.splice(itemIndex, 1);
             
             //Eliminarlo del json
-            socket.emit("delete_product", cookiename, item.id)
+            socket.emit("delete_product", cookiename, item.id, "carritos")
             socket.on('delete_product', function(res) {
                 console.log(res);
                 if (res === 0) {
@@ -170,7 +170,7 @@ function remove(item) {
                 }
             });
 
-            // Eliminar el producto del DOM
+            // Eliminar el producto del DOM  AQUI PONERSE DE ACUERDO CON LA LISTA DE FAVORITOS
             const productElement = document.getElementById('item'+itemIdToRemove);
             if (productElement) {
                 productElement.remove();
