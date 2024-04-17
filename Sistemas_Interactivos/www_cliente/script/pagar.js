@@ -54,7 +54,7 @@ function crearPedido() {
     //no hay nada que pagar, mandar aviso al usuario
     console.log(1)
   } else {
-    var pedido = generadorPedido();
+    var pedido = 0;
     var fechaActual = new Date();
     var dia = fechaActual.getDate();
     var mes = fechaActual.getMonth() + 1;
@@ -67,7 +67,8 @@ function crearPedido() {
     });
     var pedidoDict = {
       cliente: cookiename, 
-      pedido: pedido, 
+      pedido: pedido,
+      estado: "Pendiente de Pago", 
       llegada: "-", 
       fecha: fecha, 
       items: items};
@@ -78,7 +79,9 @@ function crearPedido() {
       if (res === 0) {
           console.log("Success");
       }
-  });
+    });
+
+    //eliminar el carrito
   }
 }
 

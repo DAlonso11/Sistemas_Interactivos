@@ -64,7 +64,7 @@ function handleNewProduct(client, id, name, file) {
             res.status(500).send("Error interno del servidor");
             return;
         }
-        var carritos = JSON.parse(data);
+        var carritos = JSON.parse(data); //cambiar nombre
         var carrito_name = carritos.find(element => element.cliente === name);
         const index = carritos.findIndex(element => element.cliente === name);
         carrito_name.items.push(id);
@@ -85,7 +85,7 @@ function handleDeleteProduct(client, name, id, file) {
             res.status(500).send("Error interno del servidor");
             return;
         }
-        var carritos = JSON.parse(data);
+        var carritos = JSON.parse(data); //cambiar nombre
         var carrito_name = carritos.find(element => element.cliente === name);
         const index = carritos.findIndex(element => element.cliente === name);
         carrito_name.items.splice(index, 1);
@@ -119,6 +119,10 @@ function handleCrearPedido(client, pedido) {
         }
         const pedidos = JSON.parse(data);
         pedidos.push(pedido);
+        fs.writeFile(__dirname + '/pedidos.json', JSON.stringify(pedidos), err => {
+            if (err){
+                console.error("Error writing pedidos.json:", err);
+        }});
         io.emit("crearPedidos", 0);
     });
 }
@@ -132,7 +136,7 @@ function handleNumPedido(client) {
         }
         const pedidos = JSON.parse(data);
         var l = pedidos.length;
-        io.emit("crearPedido", pedidos[l-1].pedido);
+        io.emit("crearPedido", pedidos[l-1].pedido );
     });
 }
 
