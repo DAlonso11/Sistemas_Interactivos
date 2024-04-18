@@ -7,13 +7,9 @@ var fs = require('fs');
 app.use(express.static(__dirname + '/www_cliente'));
 
 
+/* ========== FUNCIONES GET ========== */
 
-app.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_cliente/registro.html');
-});
-app.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_cliente/script/info.js');
-});
+// Cliente
 app.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/www_cliente/cesta.html');
 });
@@ -32,10 +28,30 @@ app.get('/', function(req, res,next) {
 app.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/www_cliente/pagar.html');
 });
+app.get('/', function(req, res,next) {
+    res.sendFile(__dirname + '/www_cliente/registro.html');
+});
+
+// Tienda
+app.get('/', function(req, res,next) {
+    res.sendFile(__dirname + '/www_tienda/escaner.html');
+});
+app.get('/', function(req, res,next) {
+    res.sendFile(__dirname + '/www_tienda/estadisticas.html');
+});
+app.get('/', function(req, res,next) {
+    res.sendFile(__dirname + '/www_tienda/info.html');
+});
+app.get('/', function(req, res,next) {
+    res.sendFile(__dirname + '/www_tienda/pedidos.html');
+});
+app.get('/', function(req, res,next) {
+    res.sendFile(__dirname + '/www_tienda/perfil.html');
+});
 
 
 
-/* FUNCIONES DE EVENTOS */
+/* ========== FUNCIONES DE EVENTOS ========== */
 
 function handleJoin(client, data) {
     console.log(data);
@@ -155,6 +171,25 @@ function handleNumPedido(client) {
     });
 }
 
+function handleNewUser(user) {
+    fs.readFile(__dirname + '/usuarios.json', 'utf8', function(err, data) {
+        if (err) {
+            console.error("Error reading usuarios.json:", err);
+            res.status(500).send("Error interno del servidor");
+            return;
+        }
+        const usuarios = JSON.parse(data);
+        usuarios.push(user);
+        fs.writeFile(__dirname + '/usuarios.json', JSON.stringify(usuarios), err => {
+            if (err){
+                console.error("Error writing usuarios.json:", err);
+        }});
+        io.emit("crearUsuario", 0);
+    });
+}
+
+/* ========== CONEXIONES ========== */
+
 io.on('connection', function(client) {
     console.log('Client connected...');
 
@@ -166,6 +201,7 @@ io.on('connection', function(client) {
         handleFilterJson(client, name, file);
     });
 
+    // Esto sirve para favoritos?
     client.on('new_product', function(id, name, file) {
         handleNewProduct(client, id, name, file);
     });
@@ -184,7 +220,12 @@ io.on('connection', function(client) {
 
     client.on("numPedido", function() {
         handleNumPedido(client);
-    })
+    });
+
+    client.on('usuarios', function(tipe, name, pw) {
+        handleNewUser(tipe, name, pw);
+    });
+
 });
 
 

@@ -1,7 +1,11 @@
+/* ========== CONECTAR CON EL SERVIDOR ========== */
+
 var socket = io.connect('http://localhost:5500');
   socket.on('connect', function(data) {
       socket.emit('join', 'Hello World from client');
 });
+
+/* ========== COOKIE ========== */
 
 function getCookie(nombre) {
     var cookies = document.cookie.split('; ');
@@ -21,7 +25,8 @@ var productos = []
 var ordenActual = 'nombre'; // Orden inicial por nombre
 var opcionesOrden = ['nombre', 'precio', 'talla']; // Opciones de orden disponibles
 
-/* FUNCION PARA RECUPERAR LOS PRODUCTOS */
+/* ========== RECUPERAR LOS PRODUCTOS ========== */
+
 // Solicitar la lista de pedidos al servidor
 socket.emit('productos');
 
@@ -43,12 +48,13 @@ socket.on('filterJSON', function(c) {
     renderItems(mi_carrito[0].items);
 });
 
-/* FUNCION PARA ENCONTRAR EL CARRITO DEL CLIENTE DE INICIO DE SESIÓN */
+/* ========== FUNCION PARA ENCONTRAR EL CARRITO DEL CLIENTE DE INICIO DE SESIÓN ========== */
 
-/* FUNCION PARA ENCONTRAR EL CARRITO DEL CLIENTE DE INICIO DE SESIÓN */
+/* ========== FUNCION PARA ENCONTRAR EL CARRITO DEL CLIENTE DE INICIO DE SESIÓN ========== */
 
 
-/* FUNCION QUE AÑADE ITEMS FAVORITOS DEL CLIENTE EN DIVS */
+/* ========== FUNCION QUE AÑADE ITEMS FAVORITOS DEL CLIENTE EN DIVS ========== */
+
 function renderItems(items) {
     var itemsOrdenados = ordenarProductos(items, ordenActual);
 
@@ -113,7 +119,7 @@ function renderItems(items) {
     });
 }
 
-/* ELIMINADO DE PRODUCTOS */
+/* ========== ELIMINADO DE PRODUCTOS ========== */
 
 // Función para detectar el deslizado a la derecha
 function removeOnSwipe(item) {
@@ -181,7 +187,7 @@ function remove(item) {
         }
   }
 
-/* ORDENADO DE PRODUCTOS */
+/* ========== ORDENADO DE PRODUCTOS ========== */
 
 // Detección de doble toque
 let lastTouchEnd = 0;

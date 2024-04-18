@@ -1,8 +1,11 @@
+/* ========== CONECTAR CON EL SERVIDOR ========== */
+
 var socket = io.connect('http://localhost:5500');
   socket.on('connect', function(data) {
       socket.emit('join', 'Hello World from client');
   });
 
+/* ========== COOKIE ========== */
 
 function getCookie(nombre) {
     var cookies = document.cookie.split('; ');
@@ -20,7 +23,7 @@ function getCookie(nombre) {
 var pedidos = [];
 var ordersData = [];
 
-/* FUNCION PARA RECUPERAR LOS PEDIDOS */
+/* ========== FUNCION PARA RECUPERAR LOS PEDIDOS ========== */
 
 // Solicitar la lista de pedidos al servidor
 var cookiename = getCookie("username");
@@ -34,10 +37,8 @@ socket.on('filterJSON', function(productos) {
     });
 });
 
-console.log("holaaaaaa", pedidos);
-console.log(productos);
 
-/* FUNCION PARA RECUPERAR LOS PRODUCTOS DEL CLIENTE */
+/* ========== FUNCION PARA RECUPERAR LOS PRODUCTOS DEL CLIENTE ========== */
 
 // Solicitar la lista de productos al servidor
 var cookiename = getCookie("username");
@@ -51,10 +52,8 @@ socket.on('filterJSON', function(productos) {
     });
 });
 
-console.log("1", pedidos);
-console.log("2", productos);
 
-/* FUNCION PARA ENCONTRAR LOS PEDIDOS DEL CLIENTE DE INICIO DE SESIÓN */
+/* ========== FUNCION PARA ENCONTRAR LOS PEDIDOS DEL CLIENTE DE INICIO DE SESIÓN ========== */
 function actualizarPedidosDesdeCookie() {
     var cookie = document.cookie;
     var clienteCookie = "";
@@ -87,6 +86,7 @@ function actualizarPedidosDesdeCookie() {
 
     console.log("Pedidos actualizados desde la cookie:", ordersData);
 }
+
 
 /* ========== FUNCIONAMIENTO ========== */
 
@@ -169,7 +169,9 @@ function showDetails(pedido) {
     detailsPopup.style.display = "grid";
 }
 
+
 /* FUNCION QUE AÑADE LOS PEDIDOS DEL CLIENTE EN DIVS */
+
 function renderOrders() {
     var ordersList = document.getElementById("orders-list");
 

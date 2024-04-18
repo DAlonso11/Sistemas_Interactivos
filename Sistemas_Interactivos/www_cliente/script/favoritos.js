@@ -1,7 +1,11 @@
+/* ========== CONECTAR CON EL SERVIDOR ========== */
+
 var socket = io.connect('http://localhost:5500');
   socket.on('connect', function(data) {
       socket.emit('join', 'Hello World from client');
 });
+
+/* ========== COOKIE ========== */
 
 function getCookie(nombre) {
     var cookies = document.cookie.split('; ');
@@ -14,6 +18,8 @@ function getCookie(nombre) {
     }
     return null;
 }
+
+/* ========== GET PRODUCTOS Y FAVORITOS ========== */
 
 var fav_items_list = []
 var productos = []
@@ -34,6 +40,10 @@ socket.on('mi_carrito', function(c) {
     });
 });
 
+
+/* ========== UPDATE FAVORITOS ========== */
+
+// SE ELIMINA UN FAVORITO
 
 
 /* ========== FUNCIONAMIENTO ========== */

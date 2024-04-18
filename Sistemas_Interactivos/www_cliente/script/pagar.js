@@ -1,7 +1,11 @@
+/* ========== CONECTAR CON EL SERVIDOR ========== */
+
 var socket = io.connect('http://localhost:5500');
   socket.on('connect', function(data) {
-      socket.emit('join', 'Hello World from client');
-});
+      socket.emit('join', 'Hello World from client info');
+  });
+
+/* ========== COOKIE ========== */
 
 function getCookie(nombre) {
   var cookies = document.cookie.split('; ');
@@ -14,6 +18,8 @@ function getCookie(nombre) {
   }
   return null;
 }
+
+/* ========== GET PRODUCTOS & CARRITO ========== */
 
 var carrito = []
 const productos = []
@@ -47,6 +53,7 @@ socket.on('filterJSON', function(c) {
     crearPedido();
 });
 
+/* ========== FUNCIONES PARA PROCESAR EL PEDIDO ========== */
 
 function crearPedido() {
   if (carrito.length === 0) {
