@@ -1,4 +1,4 @@
-
+/* ========== ESQUELETO MAIN  ========== */
 
 #main-container {
     text-align: center;
@@ -37,6 +37,7 @@
     font-weight: bold;
 }
 
+/* ========== ALERTA  ========== */
 
 #alert-box {
     position: fixed;

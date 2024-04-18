@@ -1,3 +1,5 @@
+/* ========== ESQUELETO MAIN  ========== */
+
 #main-container {
     text-align: center;
     position: fixed;
@@ -34,6 +36,8 @@ h4 {
     color: rgb(227, 0, 0);
 }
 
+/* ========== TOP VENTAS ========== */
+
 #items-list {
     display: grid;
     grid-row-start: 3;
@@ -58,12 +62,11 @@ h4 {
 }
 
 #boton-pago:active {
-    /* Cambiar la sombra cuando se hace clic */
     background-color: rgb(227, 0, 0);
     color: white;
 }
 
-
+/* Estilo de cada item */
 
 .item {
     display: flex;
@@ -78,8 +81,8 @@ h4 {
 
 .item-details {
     flex: 1; 
-    text-align: left; /* Alinea el texto a la izquierda */
-    display: flex; /* Hace que el contenido se comporte como un contenedor flex */
+    text-align: left; 
+    display: flex; 
     flex-direction: column;
     padding: 10px;
 }
@@ -88,14 +91,14 @@ h4 {
     font-weight: bold;
     font-size: larger;
     margin-bottom: 5px;
-    white-space: nowrap; /* No permitir envoltura de texto */
-    overflow: hidden; /* Ocultar texto que exceda el ancho máximo */
-    text-overflow: ellipsis; /* Mostrar puntos suspensivos cuando el texto se recorta */
-    max-width: 150px; /* Ancho máximo permitido */
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    max-width: 150px; 
 }
 
 .item-name:hover {
-    white-space: normal; /* Permitir que el texto se envuelva cuando se pasa el mouse */
+    white-space: normal; 
 }
 
 .message {
@@ -143,14 +146,15 @@ h4 {
     height: 70px;
 }
 
+/* Gráfico */
 
 #ventas-time-graph {
-    width: 90%; /* Ancho del 90% del contenedor padre */
-    height: 90%; /* Altura del 90% del contenedor padre */
-    margin: auto; /* Margen automático en los lados para centrar horizontalmente */
-    display: flex; /* Usar el modelo de caja flexible */
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
-    text-align: center; /* Centrar el contenido de texto */
+    width: 90%; 
+    height: 90%; 
+    margin: auto; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
 }
 

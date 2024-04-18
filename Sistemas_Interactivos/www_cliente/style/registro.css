@@ -1,3 +1,5 @@
+/* ========== ESQUELETO MAIN  ========== */
+
 #main-container {
     text-align: center;
     position: fixed;
@@ -6,7 +8,8 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: 10% 10% 52.5% 15% 12.5%;
+    grid-template-rows: 10% 14% 48.5% 15% 12.5%;
+    overflow-y: scroll;
 }
 
 #main-title {
@@ -26,6 +29,8 @@
     margin-bottom: 15px;
 }
 
+/* ========== FORMS  ========== */
+
 #main-register {
     grid-row: 3;
     display: grid;
@@ -36,6 +41,7 @@
     display: none;
 }
 
+/* inputs */
 input[type=text], input[type=password] {
     width: 100%;
     padding: 15px;
@@ -70,7 +76,6 @@ select[name="tipo"] {
 select#tipo {
     outline: none;
 }
-
 
 /* Estilo para los botones */
 button {

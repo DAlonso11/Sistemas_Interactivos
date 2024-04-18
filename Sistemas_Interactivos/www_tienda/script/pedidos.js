@@ -278,7 +278,7 @@ function showDetails(pedido) {
 
         var itemPhotoImg = document.createElement("img");
         itemPhotoImg.classList.add("item-photo-img");
-        itemPhotoImg.src = "../images/" + item.name + ".png";
+        itemPhotoImg.src = "../www_cliente/style/images/" + item.name + ".png";
         itemPhotoImg.alt = item.name;
         itemPhotoDiv.appendChild(itemPhotoImg);
 

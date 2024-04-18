@@ -37,7 +37,22 @@ socket.on('filterJSON', function(productos) {
 console.log("holaaaaaa", pedidos);
 console.log(productos);
 
-/* FUNCION PARA RECUPERAR LOS PEDIDOS DEL CLIENTE */
+/* FUNCION PARA RECUPERAR LOS PRODUCTOS DEL CLIENTE */
+
+// Solicitar la lista de productos al servidor
+var cookiename = getCookie("username");
+socket.emit('filterJSON', cookiename, "productos");
+
+// Manejar la respuesta del servidor
+socket.on('filterJSON', function(productos) {
+    console.log(productos);
+    productos.forEach(elemento => {
+        pedidos.push(elemento);
+    });
+});
+
+console.log("1", pedidos);
+console.log("2", productos);
 
 /* FUNCION PARA ENCONTRAR LOS PEDIDOS DEL CLIENTE DE INICIO DE SESIÓN */
 function actualizarPedidosDesdeCookie() {
@@ -140,7 +155,7 @@ function showDetails(pedido) {
 
         var itemPhotoImg = document.createElement("img");
         itemPhotoImg.classList.add("item-photo-img");
-        itemPhotoImg.src = "../images/" + item.name + ".png";
+        itemPhotoImg.src = "./style/images/" + item.name + ".png";
         itemPhotoImg.alt = item.name;
         itemPhotoDiv.appendChild(itemPhotoImg);
 

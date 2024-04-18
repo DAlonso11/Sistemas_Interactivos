@@ -1,3 +1,5 @@
+/* ========== ESQUELETO MAIN  ========== */
+
 #main-container {
     text-align: center;
     position: fixed;
@@ -23,6 +25,8 @@
     margin-top: 5px;
 }
 
+/* ========== ESCANER  ========== */
+
 #escaner {
     display: grid;
     grid-row-start: 3;
@@ -35,8 +39,8 @@
 }
 
 #escaner video {
-    max-width: 100%; /* Establecer un ancho máximo para el video */
-    max-height: 100%; /* Establecer una altura máxima para el video */
-    width: auto; /* Permitir que el ancho del video se ajuste automáticamente */
-    height: auto; /* Permitir que la altura del video se ajuste automáticamente */
+    max-width: 100%; 
+    max-height: 100%; 
+    width: auto;
+    height: auto;
 }
