@@ -81,7 +81,8 @@ function crearPedido() {
       }
     });
 
-    //eliminar el carrito
+    socket.emit("delete_carrito", cookiename)
+    socket.on()
   }
 }
 

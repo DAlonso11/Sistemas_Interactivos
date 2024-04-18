@@ -40,6 +40,7 @@ socket.on('filterJSON', function(c) {
     c.forEach(elemento => {
         mi_carrito.push(elemento);
     });
+    renderItems(mi_carrito[0].items);
 });
 
 /* FUNCION PARA ENCONTRAR EL CARRITO DEL CLIENTE DE INICIO DE SESIÓN */
@@ -182,23 +183,37 @@ function remove(item) {
 
 /* ORDENADO DE PRODUCTOS */
 
-document.getElementById("items-list").addEventListener('dblclick', function(e) {
-    e.preventDefault();
-    // Obtener el índice de la opción de orden actual
-    var currentIndex = opcionesOrden.indexOf(ordenActual);
+// Detección de doble toque
+let lastTouchEnd = 0;
+let doubleTapDelay = 300;
 
-    // Avanzar al siguiente índice cíclicamente
-    var nextIndex = (currentIndex + 1) % opcionesOrden.length;
+targetElement = document.getElementById("items-list");
 
-    // Actualizar el orden actual al siguiente en la lista
-    ordenActual = opcionesOrden[nextIndex];
-
-    console.log("Orden actual: ", ordenActual)
-
-    // Volver a renderizar los productos con el nuevo orden
-    renderItems(ordenarProductos(mi_carrito, ordenActual));
+targetElement.addEventListener('touchend', function(event) {
+    let now = new Date().getTime();
+    if (now - lastTouchEnd <= doubleTapDelay) {
+        event.preventDefault();
+        cambioOrden(event);
+    }
+    lastTouchEnd = now;
 });
 
+function cambioOrden(event) {
+    console.log('Doble toque detectado!');
+    document.getElementById("items-list").addEventListener('dblclick', function(e) {
+        e.preventDefault();
+
+        var currentIndex = opcionesOrden.indexOf(ordenActual);
+    
+        var nextIndex = (currentIndex + 1) % opcionesOrden.length;
+    
+        ordenActual = opcionesOrden[nextIndex];
+    
+        console.log("Orden actual: ", ordenActual)
+    
+        renderItems(ordenarProductos(mi_carrito, ordenActual));
+    });
+}
 
 function ordenarProductos(productos, criterio) {
     // Copiar la lista de productos para no modificar la original
@@ -206,21 +221,49 @@ function ordenarProductos(productos, criterio) {
 
     // Comparador personalizado según el criterio de orden
     productosOrdenados.sort(function(a, b) {
-        if (criterio === 'nombre') {
-            return a.name.localeCompare(b.name); // Ordenar por nombre
-        } else if (criterio === 'precio') {
-            // Convertir precios a números para ordenar adecuadamente
-            var precioA = parseFloat(a.price.replace(',', '.'));
-            var precioB = parseFloat(b.price.replace(',', '.'));
-            return precioA - precioB; // Ordenar por precio
-        } else if (criterio === 'talla') {
-            return a.size.localeCompare(b.size); // Ordenar por talla
+        if (!a || !b) {
+            return 0; // Manejo de valores no definidos o nulos
         }
+
+        if (criterio === 'nombre') {
+            if (a.name && b.name) {
+                return a.name.localeCompare(b.name); // Ordenar por nombre
+            }
+        } else if (criterio === 'precio') {
+            if (a.price && b.price) {
+                // Convertir precios a números para ordenar adecuadamente
+                var precioA = parseFloat(a.price.replace(',', '.'));
+                var precioB = parseFloat(b.price.replace(',', '.'));
+                return precioA - precioB; // Ordenar por precio
+            }
+        } else if (criterio === 'talla') {
+            if (a.size && b.size) {
+                return a.size.localeCompare(b.size); // Ordenar por talla
+            }
+        }
+
+        return 0;
+        
     });
 
     return productosOrdenados;
 }
 
+function buscarObjeto(transcript, mi_carrito, productos) {
+    var objetosBuscar = [];
+
+    mi_carrito[0].items.forEach(i => {
+        var articulo = productos.find(element => element.id === i);
+        objetosBuscar.push(articulo.name.toUpperCase());
+    });
+
+    objetosBuscar.forEach(a => {
+        if (transcript.toUpperCase() === a) {
+            var objetoEncontrado = productos.find(element => element.name === a)
+            renderItems([objetoEncontrado.id]);
+        }
+    })
+}
  
 // Iniciar reconocimiento de voz al hacer clic en el icono de micrófono
 document.getElementById('micro-icon').addEventListener('click', function() {
@@ -237,16 +280,8 @@ document.getElementById('micro-icon').addEventListener('click', function() {
             recognition.onresult = function(event) {
                 var transcript = event.results[0][0].transcript.trim().toUpperCase();
 
-                // Comprobar la transcripcion, detener reconocimiento y llevar a pagina de pago.
-                if (transcript === 'PAGAR') {
-                    recognition.stop();
-                    window.location.href = 'pagar.html';
-                } 
-        
-                else {
-                    // Si no coincide, mostrar un mensaje de error
-                    alert('Comando no reconocido. Por favor, intentelo de nuevo.');
-                }
+                buscarObjeto(transcript);
+                recognition.stop();
             };
 
             // Manejar errores
@@ -264,8 +299,3 @@ document.getElementById('micro-icon').addEventListener('click', function() {
             alert('No se puede acceder al micrófono. Asegúrate de permitir el acceso.');
         });
 });
-
-/* ========== ONLOAD ========== */
-window.onload = function() {
-    renderItems(mi_carrito);
-};

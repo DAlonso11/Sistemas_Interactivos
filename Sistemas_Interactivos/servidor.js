@@ -66,9 +66,15 @@ function handleNewProduct(client, id, name, file) {
         }
         var carritos = JSON.parse(data); //cambiar nombre
         var carrito_name = carritos.find(element => element.cliente === name);
-        const index = carritos.findIndex(element => element.cliente === name);
-        carrito_name.items.push(id);
-        carritos.splice(index, 1, carrito_name);
+
+        if (carrito_name === undefined) {
+            var new_carrito = {cliente: name, items: [id]};
+            carritos.push(new_carrito);
+        } else {
+            const index = carritos.findIndex(element => element.cliente === name);
+            carrito_name.items.push(id);
+            carritos.splice(index, 1, carrito_name);
+        }
 
         fs.writeFile(__dirname + '/' + file +'.json', JSON.stringify(carritos), err => {
             if (err){
@@ -87,8 +93,17 @@ function handleDeleteProduct(client, name, id, file) {
         }
         var carritos = JSON.parse(data); //cambiar nombre
         var carrito_name = carritos.find(element => element.cliente === name);
-        const index = carritos.findIndex(element => element.cliente === name);
-        carrito_name.items.splice(index, 1);
+        
+        var index = carritos.findIndex(element => element.cliente === name);
+        var index_name = mi_carrito[0].items.findIndex(element => element === id); //revisar bien
+
+        carrito_name[0].items.splice(index_name, 1);
+
+        if (carrito_name[0].items.length === 0) {
+            carritos.splice(index, 1);
+        } else {
+            carritos.splice(index, 1, carrito_name);
+        }
 
         fs.writeFile(__dirname + '/' + file +'.json', JSON.stringify(carritos), err => {
             if (err){

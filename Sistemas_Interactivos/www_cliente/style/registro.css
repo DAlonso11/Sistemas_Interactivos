@@ -11,6 +11,7 @@
 
 #main-title {
     grid-row: 2;
+    height: 85px;
     margin: 10px 10px;
     justify-content: center;
     align-items: center;
@@ -19,6 +20,10 @@
 
 #main-title h2 {
     margin-top: 5px;
+}
+
+#main-title p {
+    margin-bottom: 15px;
 }
 
 #main-register {
