@@ -11,6 +11,9 @@ app.use(express.static(__dirname + '/www_cliente'));
 
 // Cliente
 app.get('/', function(req, res,next) {
+    res.sendFile(__dirname + '/www_cliente/registro.html');
+});
+app.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/www_cliente/cesta.html');
 });
 app.get('/', function(req, res,next) {
@@ -27,9 +30,6 @@ app.get('/', function(req, res,next) {
 });
 app.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/www_cliente/pagar.html');
-});
-app.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_cliente/registro.html');
 });
 
 // Tienda

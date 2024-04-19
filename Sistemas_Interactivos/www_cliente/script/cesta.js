@@ -45,7 +45,14 @@ socket.on('filterJSON', function(c) {
     c.forEach(elemento => {
         mi_carrito.push(elemento);
     });
-    renderItems(mi_carrito[0].items);
+    if (mi_carrito.length > 0) {
+        var mis_items = []
+        mi_carrito[0].items.forEach(i => {
+            var articulo = productos.find(element => element.id === i);
+            mis_items.push(articulo);
+        });
+        renderItems(mis_items);
+    }
 });
 
 /* ========== FUNCION PARA ENCONTRAR EL CARRITO DEL CLIENTE DE INICIO DE SESIÓN ========== */
@@ -164,9 +171,9 @@ function removeOnSwipe(item) {
 function remove(item) {
     console.log(item);
     const itemIdToRemove = item.id;
-    const itemIndex = mi_carrito.findIndex(item => item.id === itemIdToRemove);
+    const itemIndex = mi_carrito[0].items.findIndex(item => item.id === itemIdToRemove);
         if (itemIndex !== -1) {
-            mi_carrito.splice(itemIndex, 1);
+            mi_carrito[0].items.splice(itemIndex, 1);
             
             //Eliminarlo del json
             socket.emit("delete_product", cookiename, item.id, "carritos")
@@ -255,7 +262,7 @@ function ordenarProductos(productos, criterio) {
     return productosOrdenados;
 }
 
-function buscarObjeto(transcript, mi_carrito, productos) {
+function buscarObjeto(transcript) {
     var objetosBuscar = [];
 
     mi_carrito[0].items.forEach(i => {
@@ -267,6 +274,7 @@ function buscarObjeto(transcript, mi_carrito, productos) {
         if (transcript.toUpperCase() === a) {
             var objetoEncontrado = productos.find(element => element.name === a)
             renderItems([objetoEncontrado.id]);
+            console.log("Correcto");
         }
     })
 }
