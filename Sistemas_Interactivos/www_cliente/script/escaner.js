@@ -127,7 +127,8 @@ function showItem(id) {
     botoncierre.id = 'botoncierre';
 
     botoncierre.addEventListener("click", function() {
-        container.style.visibility = "invisible"; 
+        container.style.visibility = "hidden"; 
+        document.getElementById("grey-window").style.visibility = "hidden";
     });
 
 }
@@ -149,6 +150,8 @@ function startScanning() {
 }
 
 function sendSocket(id, file) {
+    document.getElementById("item-container").style.visibility = "hidden";
+    document.getElementById("grey-window").style.visibility = "hidden";
     var name = getCookie("username");
     console.log(name, "name");
     socket.emit('new_product', parseInt(id), name, file);

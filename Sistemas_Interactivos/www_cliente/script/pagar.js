@@ -3,7 +3,7 @@
 var socket = io.connect('http://localhost:5500');
   socket.on('connect', function(data) {
       socket.emit('join', 'Hello World from client info');
-  });
+});
 
 /* ========== COOKIE ========== */
 
@@ -23,35 +23,24 @@ function getCookie(nombre) {
 
 var carrito = []
 const productos = []
-var n_p
 var cookiename = getCookie("username");
-
-
-// SACAMOS LOS PRODUCTOS
-socket.emit('productos');
-
-socket.on('productos', function(pdct) {
-    pdct.forEach(elemento => {
-        productos.push(elemento);
-    });
-});
-
-// SACAMOS LOS EL ULTIMO PEDIDO
+let codigo = null;
 socket.emit('numPedido');
 
 socket.on('numPedido', function(p) {
-    n_p = p
+      codigo = p
+      console.log(codigo);
+
+      socket.emit('filterJSON', cookiename, "carritos");
+
+      socket.on('filterJSON', function(c) {
+          c.forEach(elemento => {
+              carrito.push(elemento);
+          });
+          crearPedido();
+      });
 });
 
-// SACAMOS EL CARRITO DEL USUARIO
-socket.emit('filterJSON', cookiename, "carritos");
-
-socket.on('filterJSON', function(c) {
-    c.forEach(elemento => {
-        carrito.push(elemento);
-    });
-    crearPedido();
-});
 
 /* ========== FUNCIONES PARA PROCESAR EL PEDIDO ========== */
 
@@ -61,7 +50,7 @@ function crearPedido() {
     //no hay nada que pagar, mandar aviso al usuario
     console.log(1)
   } else {
-    var pedido = 0;
+    var pedido = generadorPedido();
     var fechaActual = new Date();
     var dia = fechaActual.getDate();
     var mes = fechaActual.getMonth() + 1;
@@ -82,30 +71,51 @@ function crearPedido() {
 
     socket.emit("crearPedido", pedidoDict);
     socket.on('crearPedido', function(res) {
-      console.log(res);
-      if (res === 0) {
-          console.log("Success");
-      }
+      console.log(res, crear);
     });
 
-    socket.emit("delete_carrito", cookiename)
-    socket.on()
+    socket.emit("deleteCarrito", cookiename)
+    socket.on("deleteCarrito", function(res) {
+      console.log(res, "delete");
+    });
+
+    generarQR(pedido);
+
   }
 }
 
-function generadorPedido() {
-  var num = parseInt(n_p);
-  num++;
-  var strNuevo = num.toString(); // Faltan muchas comprobaciones pero me da pereza ahora
-  if (num === 1000000) {
-    strNuevo = "000000"
-  }
-  var caracter = n_p.match(/[A-Za-z]/)[0]; //no va, arreglar 
-  strNuevo += caracter;
+function generadorPedido() { 
+  let num = parseInt(codigo.substring(0, 6));
+  let letra = codigo.charAt(6);
 
-  return strNuevo
+  if (num === 999999 && letra === 'Z') {
+    return "Ya has alcanzado la última matrícula posible.";
+  }
+
+  if (num < 999999) {
+    num++;
+  } else {
+    num = 0;
+    // Si la letra es Z, volvemos a A y aumentamos la penúltima letra
+    if (letra === 'Z') {
+      letra = 'A';
+      return num.toString().padStart(6, "0") + letra;
+    }
+    // Incrementar letra
+    letra = String.fromCharCode(letra.charCodeAt(0) + 1);
+  }
+  console.log(num)
+  return num.toString().padStart(6, "0") + letra;
 }
 
 
 // generar el qr con el codigo de pedido
 
+function generarQR(name) {
+  socket.emit("QRgenerator", name);
+
+  socket.on("QRgenerator", function(res) {
+    console.log(res, "qr");
+    //aqui ponemos la imagen en la pantalla
+  });
+}

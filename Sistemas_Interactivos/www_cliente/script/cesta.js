@@ -161,6 +161,7 @@ function removeOnSwipe(item) {
     productElement.addEventListener('touchend', function() {
         // Si el desplazamiento horizontal es positivo (hacia la derecha) y suficiente, eliminamos la tarea
         if (distX > 100) { // Ajusta el valor según sea necesario
+            console.log("HELOOOOOO");
             remove(item);
         }
         startX = startY = distX = distY = 0;
@@ -171,7 +172,9 @@ function removeOnSwipe(item) {
 function remove(item) {
     console.log(item);
     const itemIdToRemove = item.id;
-    const itemIndex = mi_carrito[0].items.findIndex(item => item.id === itemIdToRemove);
+    console.log(mi_carrito[0].items)
+    console.log(item)
+    const itemIndex = mi_carrito[0].items.findIndex(items => items === itemIdToRemove);
         if (itemIndex !== -1) {
             mi_carrito[0].items.splice(itemIndex, 1);
             

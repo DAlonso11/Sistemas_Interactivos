@@ -4,6 +4,7 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var fs = require('fs');
+const QRCode = require('qrcode');
 app.use(express.static(__dirname + '/www_cliente'));
 
 
@@ -67,8 +68,6 @@ function handleFilterJson(client, name, file) {
         const lista = JSON.parse(data);
         /* AQUI HABRIA QUE FILTRARLO POR NOMBRE */
         const newlist = lista.filter(element => element.cliente === name);
-        console.log(lista);
-        console.log(newlist)
         io.emit("filterJSON", newlist);
     });
 }
@@ -107,21 +106,21 @@ function handleDeleteProduct(client, name, id, file) {
             res.status(500).send("Error interno del servidor");
             return;
         }
-        var carritos = JSON.parse(data); //cambiar nombre
-        var carrito_name = carritos.find(element => element.cliente === name);
+        var diccionarios = JSON.parse(data); //cambiar nombre
+        var mi_diccionario = diccionarios.find(element => element.cliente === name);
         
-        var index = carritos.findIndex(element => element.cliente === name);
-        var index_name = mi_carrito[0].items.findIndex(element => element === id); //revisar bien
+        var index = diccionarios.findIndex(element => element.cliente === name);
+        var index_name = mi_diccionario.items.findIndex(element => element === id); //revisar bien
 
-        carrito_name[0].items.splice(index_name, 1);
+        mi_diccionario.items.splice(index_name, 1);
 
-        if (carrito_name[0].items.length === 0) {
-            carritos.splice(index, 1);
+        if (mi_diccionario.items.length === 0) {
+            diccionarios.splice(index, 1);
         } else {
-            carritos.splice(index, 1, carrito_name);
+            diccionarios.splice(index, 1, mi_diccionario);
         }
 
-        fs.writeFile(__dirname + '/' + file +'.json', JSON.stringify(carritos), err => {
+        fs.writeFile(__dirname + '/' + file +'.json', JSON.stringify(diccionarios), err => {
             if (err){
                 console.error("Error writing carritos.json:", err);
         }});
@@ -167,7 +166,29 @@ function handleNumPedido(client) {
         }
         const pedidos = JSON.parse(data);
         var l = pedidos.length;
-        io.emit("crearPedido", pedidos[l-1].pedido );
+        io.emit("numPedido", pedidos[l-1].pedido );
+    });
+}
+
+function handleDeleteCarrito(client, name) {
+    fs.readFile(__dirname + '/carritos.json', 'utf8', function(err, data) {
+        if (err) {
+            console.error("Error reading carritos.json:", err);
+            res.status(500).send("Error interno del servidor");
+            return;
+        }
+        const carritos = JSON.parse(data);
+        let index = carritos.findIndex(element => element.cliente === name);
+        if (index !== -1) {
+            carritos.splice(index, 1);
+            fs.writeFile(__dirname + '/carritos.json', JSON.stringify(carritos), err => {
+                if (err){
+                    console.error("Error writing carritos.json:", err);
+            }});
+            io.emit("deleteCarrito", 0);
+        } else {
+            io.emit("deleteCarrito", -1);
+        }
     });
 }
 
@@ -186,6 +207,28 @@ function handleNewUser(user) {
         }});
         io.emit("crearUsuario", 0);
     });
+}
+
+async function handleQRgenerator(client, codigo) {
+    try {
+        // Generar el código QR
+        const qrCodeData = await QRCode.toDataURL(codigo);
+        const base64Data = qrCodeData.replace(/^data:image\/png;base64,/, '');
+
+        // Directorio donde guardar los archivos PNG
+        const directorio = './www_cliente/QR_pedidos';
+
+        // Asegurarse de que el directorio exista, si no, crearlo
+        if (!fs.existsSync(directorio)) {
+            fs.mkdirSync(directorio);
+        }
+
+        // Guardar el código QR en un archivo PNG
+        fs.writeFileSync(`${directorio}${codigo}.png`, base64Data, 'base64');
+
+    } catch (error) {
+        console.error(`Error al generar el código QR para "${codigo}":`, error);
+    }
 }
 
 /* ========== CONEXIONES ========== */
@@ -222,8 +265,16 @@ io.on('connection', function(client) {
         handleNumPedido(client);
     });
 
+    client.on('deleteCarrito', function(name) {
+        handleDeleteCarrito(client, name)
+    });
+
     client.on('usuarios', function(tipe, name, pw) {
         handleNewUser(tipe, name, pw);
+    });
+
+    client.on('QRgenerator', function(codigo) {
+        handleQRgenerator(client, codigo);
     });
 
 });
