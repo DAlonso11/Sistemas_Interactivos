@@ -25,6 +25,13 @@
     margin-top: 5px;
 }
 
+/* Estilos para el contenedor del artículo (grid) */
+#item-container {
+    grid-row: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 /* ========== ESCANER ========== */
 #escaner {
     grid-row: 2;

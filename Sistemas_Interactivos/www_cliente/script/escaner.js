@@ -16,6 +16,7 @@ socket.emit("productos");
 socket.on('productos', function(pdct) {
     pdct.forEach(elemento => {
         productos.push(elemento);
+        showItem(1);
     });
 });
 
@@ -50,13 +51,12 @@ function showItem(id) {
 
     var item = productos.find(element => element.id === id);
 
-    //document.getElementById("grey-window").style.visibility = "visible";
+    document.getElementById("grey-window").style.visibility = "visible";
 
-    /*HELP DIEGO*/
-    //var container = document.getElementById("item-container");
-    //container.innerHTML = '';
+    var container = document.getElementById("item-container");
+    container.style.visibility = "visible";
+    container.innerHTML = '';
 
-    /*
     var itemDiv = document.createElement('div');
     itemDiv.id = 'item' + item.id;
     itemDiv.classList.add('item');
@@ -85,7 +85,7 @@ function showItem(id) {
     itemPriceDiv.textContent = item.price;
 
     itemDetailsDiv.appendChild(itemNameDiv);
-    itemDetailsDiv.appendChild(messageDiv); // Agregar el elemento de mensaje aquí
+    itemDetailsDiv.appendChild(messageDiv); 
     itemDetailsDiv.appendChild(itemBrandDiv);
     itemDetailsDiv.appendChild(itemSizeDiv);
     itemDetailsDiv.appendChild(itemPriceDiv);
@@ -103,9 +103,33 @@ function showItem(id) {
     itemDiv.appendChild(itemDetailsDiv);
     itemDiv.appendChild(itemPhotoDiv);
 
-    List.appendChild(itemDiv);*/
-    document.getElementById('cesta').addEventListener('click', () => sendSocket(id, "carritos"));
-    document.getElementById('fav').addEventListener('click', () => sendSocket(id, "favoritos"));
+    var texto = document.createElement('p')
+    texto.innerHTML = '¿Dónde quieres incluir este producto?';
+    itemDiv.appendChild(texto);
+
+    var cesta = document.createElement('button');
+    cesta.textContent = 'Carrito';
+    cesta.id = 'cesta';
+
+    var fav = document.createElement('button');
+    fav.textContent = 'Favoritos';
+    fav.id = 'fav'
+
+    itemDiv.appendChild(cesta);
+    itemDiv.appendChild(fav)
+
+    container.appendChild(itemDiv);
+    cesta.addEventListener('click', () => sendSocket(id, "carritos"));
+    fav.addEventListener('click', () => sendSocket(id, "favoritos"));
+
+    var botoncierre = document.createElement('span');
+    botoncierre.textContent = "X"
+    botoncierre.id = 'botoncierre';
+
+    botoncierre.addEventListener("click", function() {
+        container.style.visibility = "invisible"; 
+    });
+
 }
 
 // Función para iniciar el escaneo automáticamente
