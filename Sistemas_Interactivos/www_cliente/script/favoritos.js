@@ -125,6 +125,8 @@ function renderItems(items) {
         favouriteIconDiv.addEventListener('click', function() {
             // Llamar a la función unFavItem con el ID del artículo actual
             unFavItem(currentItemId);
+            heartIconSvg.style.filter = 'none';
+            heartIconSvg.style.opacity = '0.8';
         });
 
         var heartIconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -134,6 +136,8 @@ function renderItems(items) {
         heartIconSvg.setAttribute("fill", "rgb(227, 0, 0)");
         heartIconSvg.setAttribute("class", "bi bi-heart-fill");
         heartIconSvg.setAttribute("viewBox", "0 0 16 16");
+        heartIconSvg.setAttribute("style", "filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.4));");
+
 
         var heartPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
         heartPath.setAttribute("fill-rule", "evenodd");

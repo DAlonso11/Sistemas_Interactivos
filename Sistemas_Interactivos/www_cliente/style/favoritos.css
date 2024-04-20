@@ -40,12 +40,12 @@
 
 .item {
     display: flex;
-    padding: 10px;
+    padding: 30px;
     background-color: rgba(217, 217, 217, 0.3);
     border-radius: 30px;
     font-size: large;
     height: 130px;
-    margin: 10px;
+    margin: 20px;
 }
 
 .item-details {
@@ -64,7 +64,7 @@
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis; 
-    max-width: 50vw; 
+    max-width: 39vw; 
 }
 
 .item-name:hover {
@@ -87,10 +87,15 @@
 }
 
 .favourite-icon {
-    position: relative;
+    position:relative;
     top: 50px;
-    right: 1px;
+    right: 70px;
     width: 2;
+    height: 30px;
+}
+
+.favourite-icon path {
+    box-shadow: 5px 10px 18px #888888;
 }
 
 .item-brand {
@@ -109,10 +114,8 @@
 
 
 .item-photo {
-    width: 100px;
-    height: 100px;
+    flex: 0 0 auto; 
     padding: 10px;
-    position: relative;
 }
 
 .item-photo-img {

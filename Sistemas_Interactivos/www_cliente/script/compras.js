@@ -21,18 +21,6 @@ function getCookie(nombre) {
 
 /* ========== FUNCION PARA RECUPERAR LOS PEDIDOS ========== */
 
-// Solicitar la lista de pedidos al servidor
-var cookiename = getCookie("username");
-socket.emit('filterJSON', cookiename, "pedidos");
-
-// Manejar la respuesta del servidor
-socket.on('filterJSON', function(productos) {
-    console.log(productos);
-    productos.forEach(elemento => {
-        pedidos.push(elemento);
-    });
-});
-
 var productos = [];
 var pedidos = [];
 var ordersData = [];
@@ -51,20 +39,22 @@ socket.on('productos', function(pdct) {
 
 /* ========== RECUPERAR LOS PEDIDOS ========== */
 var cookiename = getCookie("username");
-socket.emit('filterJSON', cookiename, "carritos");
+socket.emit('filterJSON', cookiename, "pedidos");
 
 // Manejar la respuesta del servidor
 socket.on('filterJSON', function(c) {
     c.forEach(elemento => {
-        mi_carrito.push(elemento);
+        ordersData.push(elemento);
     });
-    if (mi_carrito.length > 0) {
+    if (ordersData.length > 0) {
         var mis_items = []
-        mi_carrito[0].items.forEach(i => {
+        ordersData[0].items.forEach(i => {
             var articulo = productos.find(element => element.id === i);
             mis_items.push(articulo);
         });
-        renderItems(mis_items);
+        renderOrders();
+        ordersData = mis_items;
+        console.log("Orders Data: ", ordersData);
     }
 });
 
@@ -110,7 +100,7 @@ function actualizarPedidosDesdeCookie() {
 function showDetails(pedido) {
     // Buscar el pedido en ordersData
     var order = ordersData.find(function(item) {
-        return item.pedido === pedido;
+        return pedido === pedido;
     });
 
     // Limpiar el contenido actual del pop-up
@@ -119,18 +109,15 @@ function showDetails(pedido) {
 
     // Actualizar el número de pedido en el pop-up
     var orderIdDiv = document.getElementById("order-id");
-    orderIdDiv.innerHTML = "<b>Numero de pedido: " + order.pedido + "</b>";
+    orderIdDiv.innerHTML = "<b>Numero de pedido: " + pedido + "</b>";
 
     // Cambiar la imagen del código QR
     var qrImage = document.getElementById("qr-image");
-    qrImage.innerHTML = '<img class="qr-img" src="style/images/qr/' + order.pedido + '.png" alt="QR pedido">';
+    qrImage.innerHTML = '<img class="qr-img" src="style/images/qr/' + pedido + '.png" alt="QR pedido">';
 
 
     // Buscar los detalles de los items en productos y agregarlos al pop-up
-    order.items.forEach(function(itemId) {
-        var item = productos.find(function(item) {
-            return item.id === itemId;
-        });
+    ordersData.forEach(function(item) {
 
         // Hacer div item
         var itemDiv = document.createElement("div");
@@ -190,8 +177,9 @@ function showDetails(pedido) {
 
 function renderOrders() {
     var ordersList = document.getElementById("orders-list");
-
+    console.log("renderOrders orderData: ", ordersData);
     ordersData.forEach(function(order) {
+        console.log("oder: ", order);
         var orderDetails = document.createElement("div");
         orderDetails.classList.add("order-details");
 
@@ -227,6 +215,7 @@ function renderOrders() {
         detallesButton.textContent = "Ver detalles aquí";
         detallesButton.onclick = function() {
             // Aquí llamamos a la función showDetails con el número de pedido
+            console.log("order.pedido: ", order.pedido);
             showDetails(order.pedido);
         };
         orderDetails.appendChild(detallesButton);
