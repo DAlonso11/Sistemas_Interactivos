@@ -1,11 +1,13 @@
 
 var express = require('express');
 var app = express();
+var app2 = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var fs = require('fs');
 const QRCode = require('qrcode');
 app.use(express.static(__dirname + '/www_cliente'));
+app2.use(express.static(__dirname + '/www_tienda'));
 
 
 /* ========== FUNCIONES GET ========== */
@@ -34,19 +36,19 @@ app.get('/', function(req, res,next) {
 });
 
 // Tienda
-app.get('/', function(req, res,next) {
+app2.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/www_tienda/escaner.html');
 });
-app.get('/', function(req, res,next) {
+app2.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/www_tienda/estadisticas.html');
 });
-app.get('/', function(req, res,next) {
+app2.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/www_tienda/info.html');
 });
-app.get('/', function(req, res,next) {
+app2.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/www_tienda/pedidos.html');
 });
-app.get('/', function(req, res,next) {
+app2.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/www_tienda/perfil.html');
 });
 
