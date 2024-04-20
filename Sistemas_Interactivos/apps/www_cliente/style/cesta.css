@@ -1,10 +1,39 @@
-/* ========== ESQUELETO MAIN  ========== */
+/* ========== ESQUELETO MAIN ========== */
+
+#micro-icon {
+    margin-left: 100px;
+}
 
 #main-container {
     text-align: center;
     position: fixed;
     top: 0;
-    left: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 10% 10% 59.5% 8% 12.5%;
+}
+
+#main-title {
+    grid-row: 2;
+    margin: 10px 10px;
+    justify-content: center;
+    align-items: center;
+    color: rgb(227, 0, 0);
+}
+
+#main-title h2 {
+    margin-top: 5px;
+}
+
+/* CSS Modal y boton para ir de cesta a pagar */
+
+#main-container {
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left:0;
     width: 100%;
     height: 100%;
     display: grid;
@@ -23,92 +52,37 @@
     margin-top: 5px;
 }
 
-#orders-list {
+/* ========== BOTON ========== */
+#boton-pago {
+    grid-row: 4;
+    background-color: white;
+    border-radius: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    color: rgb(227, 0, 0);
+    border: 0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#boton-pago:active {
+    /* Cambiar la sombra cuando se hace clic */
+    background-color: rgb(227, 0, 0);
+    color: white;
+}
+
+/* =========== ITEMS ========== */
+
+#items-list {
     display: grid;
     grid-row-start: 3;
-    grid-row-end: 5;
+    grid-row-end: 4;
     grid-template-rows: auto;
     grid-gap: 10px;
     padding: 10px;
     overflow: scroll;
 }
-
-.order-details {
-    padding: 30px;
-    display: flex;
-    text-align: left;
-    background-color: rgba(217, 217, 217, 0.3);
-    border-radius: 30px;
-    flex-direction: column;
-    font-size: large;
-    position: relative; 
-}
-
-.order-details button {
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-    position: absolute; 
-    bottom: 30px; 
-    right: 30px; 
-    text-decoration: underline;
-}
-
-/* ========= POP-UP PEDIDOS ========= */
-
-#details-pop-up {
-    text-align: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: none; 
-    grid-template-rows: 10% 10% 52.5% 15% 12.5%;
-    overflow: scroll;
-    background-color: white;
-}
-
-#details-pop-up-title {
-    background-color: white;
-    grid-row: 2;
-    margin: 10px 10px;
-    justify-content: center;
-    align-items: center;
-    color: rgb(227, 0, 0);
-}
-
-#qr {
-    background-color: white;
-    display: grid;
-    grid-row-start: 3;
-    grid-row-end: 5;
-}
-
-#instructions {
-    color: rgb(227, 0, 0);
-    font-size: large;
-    padding: 20px;
-}
-
-.qr-img {
-    width: 100%;
-}
-
-#order-id {
-    font-size: large;
-}
-
-#items-list {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
-}
-
-/* Estlo de cada item */
 
 .item {
     display: flex;
@@ -118,7 +92,6 @@
     border-radius: 30px;
     font-size: large;
     height: 120px;
-    margin: 20px;
 }
 
 .item-details {
@@ -136,7 +109,7 @@
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis; 
-    max-width: 50vw; 
+    max-width: 49vw; 
 }
 
 .item-name:hover {
@@ -172,7 +145,6 @@
     margin-bottom: 5px;
 }
 
-
 .item-photo {
     flex: 0 0 auto; 
     padding: 10px;
@@ -186,3 +158,5 @@
 .separador {
     height: 70px;
 }
+
+

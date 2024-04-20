@@ -117,7 +117,7 @@ function renderItems(items) {
 
         var itemPhotoImg = document.createElement('img');
         itemPhotoImg.classList.add('item-photo-img');
-        itemPhotoImg.src = "../style/images/" + item.name + ".png";
+        itemPhotoImg.src = "./style/images/" + item.name + ".png";
         itemPhotoImg.alt = item.name;
 
         itemPhotoDiv.appendChild(itemPhotoImg);

@@ -4,7 +4,7 @@
     text-align: center;
     position: fixed;
     top: 0;
-    left:0;
+    left: 0;
     width: 100%;
     height: 100%;
     display: grid;
@@ -23,60 +23,103 @@
     margin-top: 5px;
 }
 
-#main-details {
-    grid-row-start: 3;
-    grid-row-end: 5;
-    justify-content: center;
-    align-items: center;
-    overflow-y: scroll;
-    margin: 40px;
-}
-
-h4 {
-    color: rgb(227, 0, 0);
-}
-
-/* ========== TOP VENTAS ========== */
-
-#items-list {
+#orders-list {
     display: grid;
     grid-row-start: 3;
-    grid-row-end: 4;
+    grid-row-end: 5;
     grid-template-rows: auto;
     grid-gap: 10px;
     padding: 10px;
     overflow: scroll;
 }
 
-#boton-pago {
-    grid-row: 4;
-    background-color: white;
+.order-details {
+    padding: 30px;
+    display: flex;
+    text-align: left;
+    background-color: rgba(217, 217, 217, 0.3);
     border-radius: 30px;
-    margin-left: 20px;
-    margin-right: 20px;
-    border-radius: 25px;
-    font-weight: bold;
+    flex-direction: column;
+    font-size: large;
+    position: relative; 
+    max-height: 140px;
+}
+
+.order-details button {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    position: absolute; 
+    bottom: 30px; 
+    right: 30px; 
+    text-decoration: underline;
+}
+
+/* ========= POP-UP PEDIDOS ========= */
+
+#details-pop-up {
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; 
+    grid-template-rows: 10% 10% 52.5% 15% 12.5%;
+    overflow: scroll;
+    background-color: white;
+}
+
+#details-pop-up-title {
+    background-color: white;
+    grid-row: 2;
+    margin: 10px 10px;
+    justify-content: center;
+    align-items: center;
     color: rgb(227, 0, 0);
-    border: 0;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-#boton-pago:active {
-    background-color: rgb(227, 0, 0);
-    color: white;
+#qr {
+    background-color: white;
+    display: grid;
+    grid-row-start: 3;
+    grid-row-end: 5;
 }
 
-/* Estilo de cada item */
+#instructions {
+    color: rgb(227, 0, 0);
+    font-size: large;
+    padding: 20px;
+}
+
+.qr-img {
+    width: 100%;
+}
+
+#order-id {
+    font-size: large;
+}
+
+#items-list {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+/* Estlo de cada item */
 
 .item {
     display: flex;
     flex: 1; 
     padding: 30px;
+    background-color: rgba(217, 217, 217, 0.3);
     border-radius: 30px;
     font-size: large;
     height: 120px;
     margin: 20px;
-    font-size: 15px;
 }
 
 .item-details {
@@ -94,7 +137,7 @@ h4 {
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis; 
-    max-width: 150px; 
+    max-width: 50vw; 
 }
 
 .item-name:hover {
@@ -104,14 +147,12 @@ h4 {
 .message {
     display: none;
     position: relative;
-    transform: translateX(-50%);
     background-color: white;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     color: black;
     height: auto;
-    left: 70px;
 }
 
 .item-details:hover .message {
@@ -132,6 +173,7 @@ h4 {
     margin-bottom: 5px;
 }
 
+
 .item-photo {
     flex: 0 0 auto; 
     padding: 10px;
@@ -145,16 +187,3 @@ h4 {
 .separador {
     height: 70px;
 }
-
-/* Gráfico */
-
-#ventas-time-graph {
-    width: 90%; 
-    height: 90%; 
-    margin: auto; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    text-align: center; 
-}
-

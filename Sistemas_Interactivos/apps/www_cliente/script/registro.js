@@ -99,7 +99,7 @@ function redireccionarSegunTipoUsuario() {
             if (users[i].tipo === "cliente") {
                 window.location.href = "./info.html";
             } else if (users[i].tipo === "personal") {
-                window.location.href = "../www:tienda/info.html";
+                window.location.href = "../www_tienda/info.html";
             }
         }
     }

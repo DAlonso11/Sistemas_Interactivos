@@ -1,55 +1,54 @@
 
 var express = require('express');
 var app = express();
-var app2 = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var fs = require('fs');
 const QRCode = require('qrcode');
-app.use(express.static(__dirname + '/www_cliente'));
-app2.use(express.static(__dirname + '/www_tienda'));
+app.use(express.static(__dirname + '/apps'));
+
 
 
 /* ========== FUNCIONES GET ========== */
 
 // Cliente
-app.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_cliente/registro.html');
+app.get('/www_cliente/registro', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_cliente/registro.html');
 });
-app.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_cliente/cesta.html');
+app.get('/www_cliente/cesta', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_cliente/cesta.html');
 });
-app.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_cliente/compras.html');
+app.get('/www_cliente/compras', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_cliente/compras.html');
 });
-app.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_cliente/escaner.html');
+app.get('/www_cliente/escaner', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_cliente/escaner.html');
 });
-app.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_cliente/favoritos.html');
+app.get('/www_cliente/favoritos', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_cliente/favoritos.html');
 });
-app.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_cliente/info.html');
+app.get('/www_cliente/info', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_cliente/info.html');
 });
-app.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_cliente/pagar.html');
+app.get('/www_cliente/info', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_cliente/pagar.html');
 });
 
 // Tienda
-app2.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_tienda/escaner.html');
+app.get('/www_tienda/info', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_tienda/info.html');
 });
-app2.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_tienda/estadisticas.html');
+app.get('/www_tienda/escaner', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_tienda/escaner.html');
 });
-app2.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_tienda/info.html');
+app.get('/www_tienda/estadisticas', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_tienda/estadisticas.html');
 });
-app2.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_tienda/pedidos.html');
+app.get('/www_tienda/pedidos', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_tienda/pedidos.html');
 });
-app2.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/www_tienda/perfil.html');
+app.get('/www_tienda/perfil', function(req, res,next) {
+    res.sendFile(__dirname + '/apps/www_tienda/perfil.html');
 });
 
 
@@ -133,12 +132,24 @@ function handleDeleteProduct(client, name, id, file) {
 function handleProductos(client) {
     fs.readFile(__dirname + '/productos.json', 'utf8', function(err, data) {
         if (err) {
-            console.error("Error reading pedidos.json:", err);
+            console.error("Error reading productos.json:", err);
             res.status(500).send("Error interno del servidor");
             return;
         }
         const productos = JSON.parse(data);
         io.emit("productos", productos);
+    });
+}
+
+function handlePedidos(client) {
+    fs.readFile(__dirname + '/pedidos.json', 'utf8', function(err, data) {
+        if (err) {
+            console.error("Error reading pedidos.json:", err);
+            res.status(500).send("Error interno del servidor");
+            return;
+        }
+        const productos = JSON.parse(data);
+        io.emit("pedidos", productos);
     });
 }
 
@@ -270,6 +281,10 @@ io.on('connection', function(client) {
 
     client.on('productos', function() {
         handleProductos(client);
+    });
+
+    client.on('pedidos', function() {
+        handlePedidos(client);
     });
     
     client.on('crearPedido', function(pedido) {
