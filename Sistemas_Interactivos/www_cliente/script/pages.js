@@ -26,10 +26,7 @@ function info() {
     window.location.href = "info.html";
 };
 
-/* PAGAR */
-function pagar() {
-    window.location.href = "pagar.html";
-};
+
 
 /* EVENTOS DEL ESQUELETO */
 document.getElementById("header-icon").addEventListener('click', cesta);
@@ -38,5 +35,5 @@ document.getElementById("info-icon").addEventListener('click', info);
 document.getElementById("qr-icon").addEventListener('click', escaner);
 document.getElementById("box-icon").addEventListener('click', compras);
 document.getElementById("fav-icon").addEventListener('click', favoritos);
-document.getElementById("boton-pago").addEventListener('click', pagar);
+
 

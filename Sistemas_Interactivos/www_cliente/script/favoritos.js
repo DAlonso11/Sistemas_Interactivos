@@ -2,7 +2,7 @@
 
 var socket = io.connect('http://localhost:5500');
   socket.on('connect', function(data) {
-      socket.emit('join', 'Hello World from client');
+      socket.emit('join', 'Hello World from client favoritos');
 });
 
 /* ========== COOKIE ========== */
@@ -31,15 +31,32 @@ socket.on('productos', function(pdct) {
         productos.push(elemento);
     });
 });
+
+
 var cookiename = getCookie("username");
 socket.emit('filterJSON', cookiename, "favoritos");
 
-socket.on('mi_carrito', function(c) {
+// Manejar la respuesta del servidor
+socket.on('filterJSON', function(c) {
     c.forEach(elemento => {
         fav_items_list.push(elemento);
     });
+    if (fav_items_list.length > 0) {
+        var mis_items = [];
+        fav_items_list[0].items.forEach(i => {
+            var articulo = productos.find(element => element.id === i);
+            mis_items.push(articulo);
+        });
+        renderItems(mis_items);
+        console.log("mis_items: ", mis_items);
+        fav_items_list = mis_items;
+        console.log("fav_items_list ", fav_items_list);
+    }
 });
 
+console.log("fav_items_list2 ", fav_items_list);
+
+console.log("productos: ", productos);
 
 /* ========== UPDATE FAVORITOS ========== */
 
@@ -93,7 +110,7 @@ function renderItems(items) {
 
         var itemPhotoImg = document.createElement('img');
         itemPhotoImg.classList.add('item-photo-img');
-        itemPhotoImg.src = "../images/" + item.name + ".png";
+        itemPhotoImg.src = "style/images/" + item.name + ".png";
         itemPhotoImg.alt = "Logo AppsKES";
 
         itemPhotoDiv.appendChild(itemPhotoImg);
@@ -141,7 +158,7 @@ function unFavItem(itemId) {
     });
     console.log(fav_items_list);
     //Eliminarlo del json
-    socket.emit("delete_product", cookiename, item.id, "favoritos")
+    socket.emit("delete_product", cookiename, itemId, "favoritos")
     socket.on('delete_product', function(res) {
         console.log(res);
         if (res === 0) {
@@ -149,12 +166,18 @@ function unFavItem(itemId) {
         }
     });
     // Volver a renderizar la lista de elementos favoritos (+ update)
+    
+    //Eliminarlo del json
+    socket.emit("delete_product", cookiename, itemId, "favoritos")
+    socket.on('delete_product', function(res) {
+        console.log(res);
+        if (res === 0) {
+            console.log("Success");
+        }
+    });
+    console.log("fav_item_antes render: ", fav_items_list);
     renderItems(fav_items_list);
 }
 
-
-/* ========== ONLOAD ========== */
-fillFavItemsList();
-renderItems(fav_items_list);
 
 

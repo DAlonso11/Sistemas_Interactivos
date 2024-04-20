@@ -1,5 +1,12 @@
 /* ========== CONECTAR CON EL SERVIDOR ========== */
 
+/* PAGAR */
+function pagar() {
+    window.location.href = "pagar.html";
+};
+document.getElementById("boton-pago").addEventListener('click', pagar);
+
+
 var socket = io.connect('http://localhost:5500');
   socket.on('connect', function(data) {
       socket.emit('join', 'Hello World from client');
@@ -36,6 +43,7 @@ socket.on('productos', function(pdct) {
         productos.push(elemento);
     });
 });
+
 /* FUNCION PARA RECUPERAR CARRITOS */
 var cookiename = getCookie("username");
 socket.emit('filterJSON', cookiename, "carritos");
