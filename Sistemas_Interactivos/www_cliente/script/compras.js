@@ -2,7 +2,7 @@
 
 var socket = io.connect('http://localhost:5500');
   socket.on('connect', function(data) {
-      socket.emit('join', 'Hello World from client');
+      socket.emit('join', 'Hello World from compras');
   });
 
 /* ========== COOKIE ========== */
@@ -19,10 +19,6 @@ function getCookie(nombre) {
     return null;
 }
 
-
-var pedidos = [];
-var ordersData = [];
-
 /* ========== FUNCION PARA RECUPERAR LOS PEDIDOS ========== */
 
 // Solicitar la lista de pedidos al servidor
@@ -37,19 +33,39 @@ socket.on('filterJSON', function(productos) {
     });
 });
 
+var productos = [];
+var pedidos = [];
+var ordersData = [];
 
-/* ========== FUNCION PARA RECUPERAR LOS PRODUCTOS DEL CLIENTE ========== */
+/* ========== RECUPERAR LOS PRODUCTOS ========== */
 
-// Solicitar la lista de productos al servidor
-var cookiename = getCookie("username");
-socket.emit('filterJSON', cookiename, "productos");
+// Solicitar la lista de pedidos al servidor
+socket.emit('productos');
 
 // Manejar la respuesta del servidor
-socket.on('filterJSON', function(productos) {
-    console.log(productos);
-    productos.forEach(elemento => {
-        pedidos.push(elemento);
+socket.on('productos', function(pdct) {
+    pdct.forEach(elemento => {
+        productos.push(elemento);
     });
+});
+
+/* ========== RECUPERAR LOS PEDIDOS ========== */
+var cookiename = getCookie("username");
+socket.emit('filterJSON', cookiename, "carritos");
+
+// Manejar la respuesta del servidor
+socket.on('filterJSON', function(c) {
+    c.forEach(elemento => {
+        mi_carrito.push(elemento);
+    });
+    if (mi_carrito.length > 0) {
+        var mis_items = []
+        mi_carrito[0].items.forEach(i => {
+            var articulo = productos.find(element => element.id === i);
+            mis_items.push(articulo);
+        });
+        renderItems(mis_items);
+    }
 });
 
 

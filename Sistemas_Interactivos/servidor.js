@@ -192,7 +192,7 @@ function handleDeleteCarrito(client, name) {
     });
 }
 
-function handleNewUser(user) {
+function handleUsuarios(cliente) {
     fs.readFile(__dirname + '/usuarios.json', 'utf8', function(err, data) {
         if (err) {
             console.error("Error reading usuarios.json:", err);
@@ -200,12 +200,25 @@ function handleNewUser(user) {
             return;
         }
         const usuarios = JSON.parse(data);
-        usuarios.push(user);
+        io.emit("usuarios", usuarios);
+    });
+}
+
+function handleNewUsuario(client, usuario) {
+    fs.readFile(__dirname + '/usuarios.json', 'utf8', function(err, data) {
+        if (err) {
+            console.error("Error reading usuarios.json:", err);
+            res.status(500).send("Error interno del servidor");
+            return;
+        }
+        var usuarios = JSON.parse(data); 
+        usuarios.push(usuario);
+
         fs.writeFile(__dirname + '/usuarios.json', JSON.stringify(usuarios), err => {
             if (err){
                 console.error("Error writing usuarios.json:", err);
         }});
-        io.emit("crearUsuario", 0);
+        io.emit("new_user", 0);
     });
 }
 
@@ -269,8 +282,12 @@ io.on('connection', function(client) {
         handleDeleteCarrito(client, name)
     });
 
-    client.on('usuarios', function(tipe, name, pw) {
-        handleNewUser(tipe, name, pw);
+    client.on('usuarios', function() {
+        handleUsuarios(client);
+    });
+
+    client.on('new_usuario', function(usuario) {
+        handleNewUsuario(client, usuario);
     });
 
     client.on('QRgenerator', function(codigo) {

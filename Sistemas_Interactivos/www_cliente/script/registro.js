@@ -5,33 +5,24 @@ var socket = io.connect('http://localhost:5500');
 
 /* ========== USUARIOS.JSON ========== */
 
-var users = [
-    {
-        "tipo": "cliente",
-        "nombre": "Marta Perez",
-        "contraseña": "1111"
-    },
-    {
-        "tipo": "cliente",
-        "nombre": "Jorge Ramirez",
-        "contraseña": "0000"
-    },
-    {
-        "tipo": "cliente",
-        "nombre": "Francisco Garcia",
-        "contraseña": "1234"
-    },
-    {
-        "tipo": "personal",
-        "nombre": "Javier Lopez",
-        "contraseña": "9999"
-    }
-]
+var users = [];
 
 /* FUNCION PARA RECUPERAR LOS USUARIOS DEL JSON */
 
+// Solicitar la lista de pedidos al servidor
+socket.emit('usuarios');
 
-/* FUNCION PARA ACTUALIZAR EL JSON */
+// Manejar la respuesta del servidor
+socket.on('usuarios', function(user) {
+    console.log("user; ", user);
+    user.forEach(elemento => {
+        users.push(elemento);
+    });
+});
+
+console.log("User list: ", users);
+
+
 
 
 /* ========== FORMS ========== */
@@ -103,6 +94,7 @@ function redireccionarSegunTipoUsuario() {
     var username = obtenerCookie("username");
 
     for (var i = 0; i < users.length; i++) {
+        
         if (users[i].nombre === username) {
             if (users[i].tipo === "cliente") {
                 window.location.href = "./info.html";
@@ -178,6 +170,21 @@ function agregarUsuarioNuevo(nombre, contraseña, tipo) {
         "nombre": nombre,
         "contraseña": contraseña
     });
+
+    var usr = {
+        "tipo": tipo,
+        "nombre": nombre,
+        "contraseña": contraseña
+    };
+
+    // Añadirlo al json
+    socket.emit("new_usuario", usr)
+            socket.on('new_usuario', function(res) {
+                console.log(res);
+                if (res === 0) {
+                    console.log("Success");
+                }
+            });
 
     console.log("Usuario agregado correctamente.");
     console.log(users); // Para visualizar la lista de usuarios actualizada
