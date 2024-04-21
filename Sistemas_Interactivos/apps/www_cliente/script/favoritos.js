@@ -161,25 +161,17 @@ function unFavItem(itemId) {
         return item.id !== itemId;
     });
     console.log(fav_items_list);
+
     //Eliminarlo del json
     socket.emit("delete_product", cookiename, itemId, "favoritos")
     socket.on('delete_product', function(res) {
         console.log(res);
         if (res === 0) {
-            console.log("Success");
+            console.log("Favorito eliminado");
         }
     });
+
     // Volver a renderizar la lista de elementos favoritos (+ update)
-    
-    //Eliminarlo del json
-    socket.emit("delete_product", cookiename, itemId, "favoritos")
-    socket.on('delete_product', function(res) {
-        console.log(res);
-        if (res === 0) {
-            console.log("Success");
-        }
-    });
-    console.log("fav_item_antes render: ", fav_items_list);
     renderItems(fav_items_list);
 }
 

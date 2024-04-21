@@ -55,10 +55,12 @@ app.get('/www_tienda/perfil', function(req, res,next) {
 
 /* ========== FUNCIONES DE EVENTOS ========== */
 
+// Funcion que conecta cliente
 function handleJoin(client, data) {
     console.log(data);
 }
 
+// Funcion que filtra los items en los json
 function handleFilterJson(client, name, file) {
     fs.readFile(__dirname + '/' + file +'.json', 'utf8', function(err, data) {
         if (err) {
@@ -73,6 +75,7 @@ function handleFilterJson(client, name, file) {
     });
 }
 
+// Funcion que añade un nuevo producto a un json
 function handleNewProduct(client, id, name, file) {
     fs.readFile(__dirname + '/' + file +'.json', 'utf8', function(err, data) {
         if (err) {
@@ -100,6 +103,7 @@ function handleNewProduct(client, id, name, file) {
     });
 }
 
+// Funcion que borra un producto de un json
 function handleDeleteProduct(client, name, id, file) {
     fs.readFile(__dirname + '/' + file +'.json', 'utf8', function(err, data) {
         if (err) {
@@ -129,6 +133,7 @@ function handleDeleteProduct(client, name, id, file) {
     });
 }
 
+// Funcion que envia productos.json
 function handleProductos(client) {
     fs.readFile(__dirname + '/productos.json', 'utf8', function(err, data) {
         if (err) {
@@ -141,6 +146,7 @@ function handleProductos(client) {
     });
 }
 
+// Funcion que envia pedidos.json
 function handlePedidos(client) {
     fs.readFile(__dirname + '/pedidos.json', 'utf8', function(err, data) {
         if (err) {
@@ -153,6 +159,7 @@ function handlePedidos(client) {
     });
 }
 
+// Funcion que crea un pedido
 function handleCrearPedido(client, pedido) {
     fs.readFile(__dirname + '/pedidos.json', 'utf8', function(err, data) {
         if (err) {
@@ -170,6 +177,7 @@ function handleCrearPedido(client, pedido) {
     });
 }
 
+// Funcion que devuelve el codigo del ultimo pedido del json
 function handleNumPedido(client) {
     fs.readFile(__dirname + '/pedidos.json', 'utf8', function(err, data) {
         if (err) {
@@ -183,6 +191,22 @@ function handleNumPedido(client) {
     });
 }
 
+// Funcion que al recargar la pagina enseña el ultimo pedido
+function handleUltimoPedido(client, name) {
+    fs.readFile(__dirname + '/pedidos.json', 'utf8', function(err, data) {
+        if (err) {
+            console.error("Error reading pedidos.json:", err);
+            res.status(500).send("Error interno del servidor");
+            return;
+        }
+        const lista = JSON.parse(data);
+        const newlist = lista.filter(element => element.cliente === name);
+        let ultimopedido = newlist[newlist.length -1];
+        io.emit("ultimoPedido", ultimopedido);
+    });
+}
+
+// Funcion borra un item del carrito de un cliente
 function handleDeleteCarrito(client, name) {
     fs.readFile(__dirname + '/carritos.json', 'utf8', function(err, data) {
         if (err) {
@@ -205,6 +229,7 @@ function handleDeleteCarrito(client, name) {
     });
 }
 
+// Funcion que devuelve usuarios.json
 function handleUsuarios(cliente) {
     fs.readFile(__dirname + '/usuarios.json', 'utf8', function(err, data) {
         if (err) {
@@ -217,6 +242,7 @@ function handleUsuarios(cliente) {
     });
 }
 
+// Funcion que añade un nuev usuario a usuarios.json
 function handleNewUsuario(client, usuario) {
     fs.readFile(__dirname + '/usuarios.json', 'utf8', function(err, data) {
         if (err) {
@@ -235,27 +261,26 @@ function handleNewUsuario(client, usuario) {
     });
 }
 
+// Funcion que genera el qr de un pedido
 async function handleQRgenerator(client, codigo) {
     try {
-        // Generar el código QR
         const qrCodeData = await QRCode.toDataURL(codigo);
         const base64Data = qrCodeData.replace(/^data:image\/png;base64,/, '');
 
-        // Directorio donde guardar los archivos PNG
-        const directorio = './www_cliente/QR_pedidos';
+        const directorio = './apps/www_cliente/QR_pedidos';
 
-        // Asegurarse de que el directorio exista, si no, crearlo
         if (!fs.existsSync(directorio)) {
             fs.mkdirSync(directorio);
         }
 
-        // Guardar el código QR en un archivo PNG
-        fs.writeFileSync(`${directorio}${codigo}.png`, base64Data, 'base64');
+        fs.writeFileSync(`${directorio}/${codigo}.png`, base64Data, 'base64');
+        io.emit("QRgenerator", 0);
 
     } catch (error) {
         console.error(`Error al generar el código QR para "${codigo}":`, error);
     }
 }
+
 
 /* ========== CONEXIONES ========== */
 
@@ -295,6 +320,10 @@ io.on('connection', function(client) {
         handleNumPedido(client);
     });
 
+    client.on("ultimoPedido", function(name) {
+        handleUltimoPedido(client, name);
+    })
+
     client.on('deleteCarrito', function(name) {
         handleDeleteCarrito(client, name)
     });
@@ -314,6 +343,7 @@ io.on('connection', function(client) {
 });
 
 
+/* ========== PUERTO ========== */
 
 server.listen(5500);
 

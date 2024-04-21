@@ -25,13 +25,6 @@
     margin-top: 5px;
 }
 
-/* Estilos para el contenedor del artículo (grid) */
-#item-container {
-    grid-row: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 /* ========== ESCANER ========== */
 #escaner {
     grid-row: 2;
@@ -52,6 +45,11 @@ video {
 }
 
 /* ========== ITEMS ========== */
+#item-container {
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+}
 
 .item {
     display: flex;
@@ -61,6 +59,7 @@ video {
     border-radius: 30px;
     font-size: large;
     height: 120px;
+    width: 100%;
     margin: 20px;
 }
 
@@ -124,3 +123,11 @@ video {
     max-width: 100%; 
     height: 100px; 
 }
+
+button {
+    background-color: rgb(227, 0, 0);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+  }
+  

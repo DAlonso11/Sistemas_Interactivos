@@ -113,7 +113,7 @@ function showDetails(pedido) {
 
     // Cambiar la imagen del código QR
     var qrImage = document.getElementById("qr-image");
-    qrImage.innerHTML = '<img class="qr-img" src="style/images/qr/' + pedido + '.png" alt="QR pedido">';
+    qrImage.innerHTML = '<img class="qr-img" src="QR_pedidos/' + pedido + '.png" alt="QR pedido">';
 
 
     // Buscar los detalles de los items en productos y agregarlos al pop-up

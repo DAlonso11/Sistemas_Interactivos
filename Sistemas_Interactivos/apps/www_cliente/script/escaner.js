@@ -16,23 +16,42 @@ socket.emit("productos");
 socket.on('productos', function(pdct) {
     pdct.forEach(elemento => {
         productos.push(elemento);
-        showItem(1);
     });
 });
 
-// Función para acceder a la cámara
-function activateCamera() {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-            .then(function(stream) {
-                video.srcObject = stream;
-            })
-            .catch(function(error) {
-                console.error('Error al acceder a la cámara:', error);
-            });
-    } else {
-        console.error('getUserMedia no está soportado en este navegador');
-    }
+function startScanning() {
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+    .then(function(stream) {
+        var video = document.createElement('video');
+        video.srcObject = stream;
+        video.setAttribute('playsinline', true); // iOS support
+        video.play();
+        document.getElementById('camara').appendChild(video);
+
+        var canvasElement = document.createElement('canvas');
+        var canvas = canvasElement.getContext('2d');
+
+        video.addEventListener('loadedmetadata', function() {
+            canvasElement.width = video.videoWidth;
+            canvasElement.height = video.videoHeight;
+        });
+
+        video.addEventListener('canplay', function() {
+            setInterval(function() {
+                canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+                var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                var code = jsQR(imageData.data, imageData.width, imageData.height);
+                if (code) {
+                    console.log('QR Code encontrado:', code.data);
+                    // Aquí puedes hacer lo que desees con el código QR, por ejemplo, mostrarlo en la página
+                    showItem(parseInt(code.data));
+                }
+            }, 1000); // Escanea cada segundo
+        });
+    })
+    .catch(function(err) {
+        console.log("No se pudo acceder a la cámara: ", err);
+    });
 }
 
 function getCookie(nombre) {
@@ -95,7 +114,7 @@ function showItem(id) {
 
     var itemPhotoImg = document.createElement('img');
     itemPhotoImg.classList.add('item-photo-img');
-    itemPhotoImg.src = "../style/images/" + item.name + ".png";
+    itemPhotoImg.src = "./style/images/" + item.name + ".png";
     itemPhotoImg.alt = item.name;
 
     itemPhotoDiv.appendChild(itemPhotoImg);
@@ -133,22 +152,6 @@ function showItem(id) {
 
 }
 
-// Función para iniciar el escaneo automáticamente
-function startScanning() {
-    // If found your qr code
-    function onScanSuccess(decodeText, decodeResult) {
-        console.log(decodeText);
-        showItem(decodeText);
-        //sendSocket(decodeText);
-    }
-
-    let htmlscanner = new Html5QrcodeScanner(
-        "video-feed",
-        { fps: 10, qrbox: 250 }
-    );
-    htmlscanner.render(onScanSuccess);
-}
-
 function sendSocket(id, file) {
     document.getElementById("item-container").style.visibility = "hidden";
     document.getElementById("grey-window").style.visibility = "hidden";
@@ -160,50 +163,14 @@ function sendSocket(id, file) {
     socket.on('new_product', function(res) {
         console.log(res);
         if (res === 0) {
-            console.log("Success");
+            console.log("Producto añadido");
         }
     });
 }
 
-// Activar la cámara inicialmente
-activateCamera();
 
-// Iniciar el escaneo automáticamente cuando la página esté completamente cargada
-document.addEventListener("DOMContentLoaded", function() {
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Aquí va el código que quieres ejecutar cuando se carga la página
     startScanning();
 });
-
-
-
-/*document.addEventListener("DOMContentLoaded", function() {
-    const videoFeed = document.getElementById('video-feed');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
-
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-        .then(function(stream) {
-            videoFeed.srcObject = stream;
-            videoFeed.play();
-        })
-        .catch(function(err) {
-            console.error("Error al acceder a la cámara:", err);
-        });
-
-    function scanQRCode() {
-        ctx.drawImage(videoFeed, 0, 0, canvas.width, canvas.height);
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const code = jsQR(imageData.data, imageData.width, imageData.height);
-        if (code && code.score > 0.8) { // Verificar si se detecta un código QR y su puntuación es alta
-            alert("Código QR detectado: " + code.data);
-        }
-        requestAnimationFrame(scanQRCode);
-    }
-
-    scanQRCode();
-});*/
-
-
-
-
-// enviamos el id correspondiente al servidor para que añada ese producto a carrito
-

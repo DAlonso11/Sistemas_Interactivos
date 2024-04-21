@@ -1,10 +1,8 @@
 /* ========== CONECTAR CON EL SERVIDOR ========== */
 
-/* PAGAR */
-function pagar() {
+document.getElementById("boton-pago").addEventListener("click", function() {
     window.location.href = "pagar.html";
-};
-document.getElementById("boton-pago").addEventListener('click', pagar);
+})
 
 
 var socket = io.connect('http://localhost:5500');
@@ -191,7 +189,7 @@ function remove(item) {
             socket.on('delete_product', function(res) {
                 console.log(res);
                 if (res === 0) {
-                    console.log("Success");
+                    console.log("Producto borrado");
                 }
             });
 
@@ -223,7 +221,6 @@ targetElement.addEventListener('touchend', function(event) {
 });
 
 function cambioOrden(event) {
-    console.log('Doble toque detectado!');
     document.getElementById("items-list").addEventListener('dblclick', function(e) {
         e.preventDefault();
 
@@ -233,7 +230,7 @@ function cambioOrden(event) {
     
         ordenActual = opcionesOrden[nextIndex];
     
-        console.log("Orden actual: ", ordenActual)
+        console.log("Orden cambiado a: ", ordenActual)
     
         renderItems(ordenarProductos(mi_carrito, ordenActual));
     });
@@ -276,22 +273,31 @@ function ordenarProductos(productos, criterio) {
 function buscarObjeto(transcript) {
     var objetosBuscar = [];
 
-    mi_carrito[0].items.forEach(i => {
+    if (mi_carrito.length == 0){
+        console.log("El carrito está vacío")
+    }
+
+    else {
+        mi_carrito[0].items.forEach(i => {
         var articulo = productos.find(element => element.id === i);
-        objetosBuscar.push(articulo.name.toUpperCase());
+        objetosBuscar.push(articulo);
     });
 
     objetosBuscar.forEach(a => {
-        if (transcript.toUpperCase() === a) {
-            var objetoEncontrado = productos.find(element => element.name === a)
-            renderItems([objetoEncontrado.id]);
+        var nombreArticulo = a.name.toUpperCase()
+        if (transcript.toUpperCase() === nombreArticulo) {
+            var objetoEncontrado = productos.find(element => element.id === a.id)
+            renderItems([objetoEncontrado]);
             console.log("Correcto");
         }
     })
+    }
 }
  
 // Iniciar reconocimiento de voz al hacer clic en el icono de micrófono
 document.getElementById('micro-icon').addEventListener('click', function() {
+    document.getElementById('micro-icon').style.display = 'grid';
+    document.getElementById('micro-icon-voice').style.display = 'none';
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(function(stream) {
             // Crear un nuevo objeto SpeechRecognition
@@ -318,6 +324,8 @@ document.getElementById('micro-icon').addEventListener('click', function() {
             recognition.onend = function() {
                 stream.getTracks().forEach(track => track.stop());
             };
+            //document.getElementById('micro-icon').style.visibility = 'visible'
+            //document.getElementById('micro-icon-voice').style.visibility = 'hidden'
         })
         .catch(function(error) {
             // Manejar errores

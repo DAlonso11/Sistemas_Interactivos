@@ -182,7 +182,7 @@ function agregarUsuarioNuevo(nombre, contraseña, tipo) {
             socket.on('new_usuario', function(res) {
                 console.log(res);
                 if (res === 0) {
-                    console.log("Success");
+                    console.log("Usuario creado");
                 }
             });
 

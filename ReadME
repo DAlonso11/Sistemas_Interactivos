@@ -1,0 +1,17 @@
+Instrucciones para utilizar el prototipo:
+
+1- Primero 
+1- Puedes escanear los diferentes productos, usando los QR de los artículos que se encuentran en el directorio 
+QRs
+
+2
+1- Al agitar el telefono en cualquiera de las paginas, se activa la ayuda notificandolo al personal en tienda.
+
+2- En la opción de búsqueda por micrófono de los artículos en la cesta y favoritos se debe decir el nombre exacto del 
+artículo teniendo en cuenta que se debe decir claramente y con las pausas pertinentes para que la API de voz detecte 
+correctamente el producto mencionado. Una vez que el producto se ha cargado (siempre y cuando este estuviese en la 
+cesta o en favoritos), pulsando nuevamente sobre el icono de la cesa o en su caso en el de favoritos, todos los 
+artículos volverán a cargarse nuevamente.
+
+3- Al deslizar hacia la derecha en la cesta se puede eliminar el artículo de la cesta.
+4- En favoritos se puede eliminar el artículo pulsando el botón.

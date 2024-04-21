@@ -29,7 +29,6 @@ socket.emit('numPedido');
 
 socket.on('numPedido', function(p) {
       codigo = p
-      console.log(codigo);
 
       socket.emit('filterJSON', cookiename, "carritos");
 
@@ -46,16 +45,20 @@ socket.on('numPedido', function(p) {
 
 function crearPedido() {
   if (carrito.length === 0) {
-    console.log(carrito)
-    //no hay nada que pagar, mandar aviso al usuario
-    console.log(1)
-  } else {
+    socket.emit('ultimoPedido', cookiename);
+    socket.on('ultimoPedido', function(u) {
+      if (u.estado === "Pendiente de Pago") {
+        showQR(u.pedido);
+      }
+    });
+
+  } else if (carrito.length !== 0) {
     var pedido = generadorPedido();
     var fechaActual = new Date();
     var dia = fechaActual.getDate();
     var mes = fechaActual.getMonth() + 1;
     var año = fechaActual.getFullYear();
-  
+
     var fecha = dia + '/' + mes + '/' + año;
     var items = []
     carrito[0].items.forEach(elemento => {
@@ -67,22 +70,23 @@ function crearPedido() {
       estado: "Pendiente de Pago", 
       llegada: "-", 
       fecha: fecha, 
-      items: items};
-
+      items: items
+    };
     socket.emit("crearPedido", pedidoDict);
     socket.on('crearPedido', function(res) {
-      console.log(res, crear);
+      if (res === 0) {
+        console.log("Pedido creado");
+      }
     });
-
     socket.emit("deleteCarrito", cookiename)
     socket.on("deleteCarrito", function(res) {
-      console.log(res, "delete");
+      if (res === 0){
+        generarQR(pedido);
+        console.log("Pedido borrado");
+      }
     });
-
-    generarQR(pedido);
-
-  }
-}
+  };
+};
 
 function generadorPedido() { 
   let num = parseInt(codigo.substring(0, 6));
@@ -104,10 +108,19 @@ function generadorPedido() {
     // Incrementar letra
     letra = String.fromCharCode(letra.charCodeAt(0) + 1);
   }
-  console.log(num)
   return num.toString().padStart(6, "0") + letra;
 }
 
+function showQR(name) {
+
+  var QRcontainer = document.getElementById("qr_cliente");
+  
+  var QR = document.createElement('img');
+  QR.id = "QR";
+  QR.src = "QR_pedidos/" + name + '.png';
+
+  QRcontainer.appendChild(QR);
+}
 
 // generar el qr con el codigo de pedido
 
@@ -115,7 +128,10 @@ function generarQR(name) {
   socket.emit("QRgenerator", name);
 
   socket.on("QRgenerator", function(res) {
-    console.log(res, "qr");
-    //aqui ponemos la imagen en la pantalla
+    if (res === 0) {
+      console.log("QR generado");
+      showQR(name);
+    }
+    
   });
 }
