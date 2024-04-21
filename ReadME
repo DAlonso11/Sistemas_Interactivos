@@ -1,17 +1,29 @@
 Instrucciones para utilizar el prototipo:
 
-1- Primero 
-1- Puedes escanear los diferentes productos, usando los QR de los artículos que se encuentran en el directorio 
-QRs
+1- Primero se debe registrar el usuario en la pagina de registro, cerrar la sesión e iniciar sesión de nuevo con 
+el nombre de usuario y la contraseña especificada durante el registro.
 
-2
-1- Al agitar el telefono en cualquiera de las paginas, se activa la ayuda notificandolo al personal en tienda.
+2- Se pueden escanear los diferentes productos, usando los QR de los artículos que se encuentran en el directorio 
+QRs. Tras escanearlos, se pueden enviar a la cesta o a favoritos.
 
-2- En la opción de búsqueda por micrófono de los artículos en la cesta y favoritos se debe decir el nombre exacto del 
+3- Al agitar el telefono en cualquiera de las paginas, se activará la ayuda notificandolo al personal en tienda. Si se prueba 
+desde dos dispositivos al mismo tiempo se pude comprobar como al dependiente de tienda le sale la notificación, y al indicar
+que va a ayudar al cliente, a este le saldrá un nuevo mensaje avisandola que dependiente va a ayudarle.
+
+4- Al deslizar hacia la derecha en la cesta se puede eliminar el artículo de la cesta.
+
+5- En favoritos se puede eliminar el artículo pulsando el botón.
+
+6- En la opción de búsqueda por micrófono de los artículos en la cesta y favoritos se debe decir el nombre exacto del 
 artículo teniendo en cuenta que se debe decir claramente y con las pausas pertinentes para que la API de voz detecte 
 correctamente el producto mencionado. Una vez que el producto se ha cargado (siempre y cuando este estuviese en la 
 cesta o en favoritos), pulsando nuevamente sobre el icono de la cesa o en su caso en el de favoritos, todos los 
 artículos volverán a cargarse nuevamente.
 
-3- Al deslizar hacia la derecha en la cesta se puede eliminar el artículo de la cesta.
-4- En favoritos se puede eliminar el artículo pulsando el botón.
+7- Para ordenar los artículos se debe hacer un doble click en la pantalla.
+
+8- Desde la cesta se puede proceder al pago, en ese momento, se generará un QR que debe ser escaneado desde la web del
+personal de tienda. Se debe iniciar sesión con el personal de tienda, para ello, iniciar sesión con el usuario "Julian Lopez"
+y la contraseña "9999" (perfil de empleado creado para facilitar el testeo del prototipo, si lo desea tambien es posible registrarse 
+usted mismo como dependiente). Posteriormente, el personal de tienda escanea el QR del cliente, el pago se completa, 
+y el estado del pedido en el servidor pasa a ser "pagado".

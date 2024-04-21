@@ -47,6 +47,7 @@ video {
 /* ========== ITEMS ========== */
 #item-container {
     position: absolute;
+    margin-top: 60%;
     justify-content: center;
     align-items: center;
 }
@@ -54,13 +55,15 @@ video {
 .item {
     display: flex;
     flex: 1; 
-    padding: 30px;
-    background-color: rgba(217, 217, 217, 0.3);
+    justify-content: center;
+    margin-left: 8%;
+    margin-right: 8%;
+    align-items: center;
+    background-color: rgb(217, 217, 217);
     border-radius: 30px;
     font-size: large;
-    height: 120px;
+    height: 140px;
     width: 100%;
-    margin: 20px;
 }
 
 .item-details {
@@ -130,4 +133,20 @@ button {
     border: none;
     padding: 10px 20px;
   }
-  
+
+#button-container {
+    position: absolute;
+    margin-top: 98%;
+    margin-left: 25%;
+    margin-right: 25%;
+    justify-content: center;
+    align-items: center;
+}
+
+#cesta {
+    border-radius: 20%;
+}
+
+#fav {
+    border-radius: 20%;
+}

@@ -297,7 +297,6 @@ function buscarObjeto(transcript) {
 // Iniciar reconocimiento de voz al hacer clic en el icono de micrófono
 document.getElementById('micro-icon').addEventListener('click', function() {
     document.getElementById('micro-icon').style.display = 'grid';
-    document.getElementById('micro-icon-voice').style.display = 'none';
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(function(stream) {
             // Crear un nuevo objeto SpeechRecognition
@@ -324,8 +323,6 @@ document.getElementById('micro-icon').addEventListener('click', function() {
             recognition.onend = function() {
                 stream.getTracks().forEach(track => track.stop());
             };
-            //document.getElementById('micro-icon').style.visibility = 'visible'
-            //document.getElementById('micro-icon-voice').style.visibility = 'hidden'
         })
         .catch(function(error) {
             // Manejar errores

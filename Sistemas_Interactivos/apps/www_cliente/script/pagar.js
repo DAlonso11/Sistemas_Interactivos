@@ -47,8 +47,10 @@ function crearPedido() {
   if (carrito.length === 0) {
     socket.emit('ultimoPedido', cookiename);
     socket.on('ultimoPedido', function(u) {
-      if (u.estado === "Pendiente de Pago") {
-        showQR(u.pedido);
+      if (u !== null) {
+        if (u.estado === "Pendiente de Pago") {
+          showQR(u.pedido);
+        }
       }
     });
 
@@ -82,7 +84,7 @@ function crearPedido() {
     socket.on("deleteCarrito", function(res) {
       if (res === 0){
         generarQR(pedido);
-        console.log("Pedido borrado");
+        console.log("Carrito borrado");
       }
     });
   };

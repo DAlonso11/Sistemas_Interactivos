@@ -60,6 +60,16 @@ function handleJoin(client, data) {
     console.log(data);
 }
 
+// Funcoin que gestiona la alerta
+
+function handleAlert(client, name) {
+    io.emit("alert", name);
+}
+
+function handleAlertFinish(client, name) {
+    io.emit("alertFinish", name);
+}
+
 // Funcion que filtra los items en los json
 function handleFilterJson(client, name, file) {
     fs.readFile(__dirname + '/' + file +'.json', 'utf8', function(err, data) {
@@ -111,7 +121,7 @@ function handleDeleteProduct(client, name, id, file) {
             res.status(500).send("Error interno del servidor");
             return;
         }
-        var diccionarios = JSON.parse(data); //cambiar nombre
+        var diccionarios = JSON.parse(data); 
         var mi_diccionario = diccionarios.find(element => element.cliente === name);
         
         var index = diccionarios.findIndex(element => element.cliente === name);
@@ -154,8 +164,8 @@ function handlePedidos(client) {
             res.status(500).send("Error interno del servidor");
             return;
         }
-        const productos = JSON.parse(data);
-        io.emit("pedidos", productos);
+        const pedidos = JSON.parse(data);
+        io.emit("pedidos", pedidos);
     });
 }
 
@@ -206,6 +216,27 @@ function handleUltimoPedido(client, name) {
     });
 }
 
+// Cambia el estado del pedido
+function handleEstadoPedido(client, codigo, estado) {
+    fs.readFile(__dirname + '/pedidos.json', 'utf8', function(err, data) {
+        if (err) {
+            console.error("Error reading pedidos.json:", err);
+            res.status(500).send("Error interno del servidor");
+            return;
+        }
+        const lista = JSON.parse(data);
+        const newlist = lista.find(element => element.pedido === codigo);
+        newlist.estado = estado;
+        const index = lista.findIndex(element => element.pedido === codigo);
+        lista.splice(index, 1, newlist);
+        fs.writeFile(__dirname + '/pedidos.json', JSON.stringify(lista), err => {
+            if (err){
+                console.error("Error writing pedidos.json:", err);
+        }});
+        io.emit("estadoPedido", 0);
+    });
+}
+
 // Funcion borra un item del carrito de un cliente
 function handleDeleteCarrito(client, name) {
     fs.readFile(__dirname + '/carritos.json', 'utf8', function(err, data) {
@@ -242,7 +273,7 @@ function handleUsuarios(cliente) {
     });
 }
 
-// Funcion que añade un nuev usuario a usuarios.json
+// Funcion que añade un nuevo usuario a usuarios.json
 function handleNewUsuario(client, usuario) {
     fs.readFile(__dirname + '/usuarios.json', 'utf8', function(err, data) {
         if (err) {
@@ -257,7 +288,7 @@ function handleNewUsuario(client, usuario) {
             if (err){
                 console.error("Error writing usuarios.json:", err);
         }});
-        io.emit("new_user", 0);
+        io.emit("new_usuario", 0);
     });
 }
 
@@ -291,11 +322,18 @@ io.on('connection', function(client) {
       handleJoin(client, data);
     });
 
+    client.on('alert', function(name) {
+        handleAlert(client, name);
+    });
+
+    client.on('alertFinish', function(name) {
+        handleAlertFinish(client, name);
+    });
+
     client.on('filterJSON', function(name, file) {
         handleFilterJson(client, name, file);
     });
 
-    // Esto sirve para favoritos?
     client.on('new_product', function(id, name, file) {
         handleNewProduct(client, id, name, file);
     });
@@ -322,6 +360,10 @@ io.on('connection', function(client) {
 
     client.on("ultimoPedido", function(name) {
         handleUltimoPedido(client, name);
+    });
+
+    client.on("estadoPedido", function(codigo, estado) {
+        handleEstadoPedido(client, codigo, estado);
     })
 
     client.on('deleteCarrito', function(name) {

@@ -17,6 +17,7 @@ socket.on('productos', function(pdct) {
     pdct.forEach(elemento => {
         productos.push(elemento);
     });
+    ///startScanning()
 });
 
 function startScanning() {
@@ -122,9 +123,7 @@ function showItem(id) {
     itemDiv.appendChild(itemDetailsDiv);
     itemDiv.appendChild(itemPhotoDiv);
 
-    var texto = document.createElement('p')
-    texto.innerHTML = '¿Dónde quieres incluir este producto?';
-    itemDiv.appendChild(texto);
+    var buttonDiv = document.getElementById("button-container");
 
     var cesta = document.createElement('button');
     cesta.textContent = 'Carrito';
@@ -134,8 +133,8 @@ function showItem(id) {
     fav.textContent = 'Favoritos';
     fav.id = 'fav'
 
-    itemDiv.appendChild(cesta);
-    itemDiv.appendChild(fav)
+    buttonDiv.appendChild(cesta);
+    buttonDiv.appendChild(fav);
 
     container.appendChild(itemDiv);
     cesta.addEventListener('click', () => sendSocket(id, "carritos"));
@@ -149,7 +148,6 @@ function showItem(id) {
         container.style.visibility = "hidden"; 
         document.getElementById("grey-window").style.visibility = "hidden";
     });
-
 }
 
 function sendSocket(id, file) {

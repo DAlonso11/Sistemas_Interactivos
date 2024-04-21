@@ -1,5 +1,9 @@
 /* ========== ESQUELETO MAIN  ========== */
 
+#micro-icon {
+    margin-left: 100px;
+}
+
 #main-container {
     text-align: center;
     position: fixed;
@@ -88,6 +92,8 @@
 
 .favourite-icon {
     position:relative;
+    margin-top: 20%;
+    margin-right: 80%;
     top: 50px;
     right: 70px;
     width: 2;

@@ -81,10 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var password = passwordInput.value;
         var tipo = tipoInput.value;
 
-        if (agregarUsuarioNuevo(username, password, tipo)) {
-            // Redirigir a la página correspondiente según el tipo de usuario
-            redireccionarSegunTipoUsuario();
-        }
+        agregarUsuarioNuevo(username, password, tipo);
     });
 
 });
@@ -179,17 +176,13 @@ function agregarUsuarioNuevo(nombre, contraseña, tipo) {
 
     // Añadirlo al json
     socket.emit("new_usuario", usr)
-            socket.on('new_usuario', function(res) {
-                console.log(res);
-                if (res === 0) {
-                    console.log("Usuario creado");
-                }
-            });
-
-    console.log("Usuario agregado correctamente.");
-    console.log(users); // Para visualizar la lista de usuarios actualizada
-
-    return true; // Usuario agregado correctamente
+    socket.on('new_usuario', function(res) {
+        console.log(res);
+        if (res === 0) {
+            console.log("Usuario creado");
+            window.location.href = "registro.html";
+        }
+    });
 }
 
 /* FUNCIÓN PARA VERIFICAR SI EL NOMBRE DE USUARIO YA EXISTE */
